@@ -1,0 +1,34 @@
+<h1>Listing Notification Templates</h1>
+<hr/>
+
+<table class="table table-striped">
+  <tr>
+    <th width="50%">Template</th>
+    <th>Max Arguments</th>
+    <th>Model</th>
+	<th>Created At Method</th>
+	<th>User Attribute (to_attr)</th>
+	<th>Link Attribute</th>
+	<th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @notification_templates.each do |notification_template| %>
+  <tr>
+    <td><%= notification_template.template %></td>
+    <td><%= notification_template.max_arguments %></td>
+	<td><%= notification_template.model %></td>
+	<td><%= notification_template.method %></td>
+	<td><%= notification_template.to_attr %></td>
+	<td><%= notification_template.link_attr %></td>
+    <td><%= link_to 'Show', notification_template, :class => "btn btn-info" %></td>
+    <td><%= link_to 'Edit', edit_notification_template_path(notification_template), :class => "btn btn-success" %></td>
+    <td><%= link_to 'Destroy', notification_template, confirm: 'Are you sure?', method: :delete, :class => "btn btn-danger" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Notification template', new_notification_template_path %>

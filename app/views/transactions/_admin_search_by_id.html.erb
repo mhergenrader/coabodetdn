@@ -1,0 +1,55 @@
+
+<h2>Search Transactions by ID</h2>
+
+<script>
+$(function() { 
+	$('.user-typeahead').typeahead({source: <%= array_or_string_for_javascript(User.all.collect { |u| [u.email] }) %>});
+});
+</script>
+Service ID:<form>
+<input type="text" value="" name="id" />
+<button class="btn btn-success" style="margin-bottom:9px;">Search</button>
+</form>
+
+<% if @t != nil %>
+	<table class="table table-striped">
+	  <tr>
+		<th>Service</th>
+		<th>Sender</th>
+		<th>Receiver</th>
+		<th>Amount</th>
+		<th></th>
+		<th></th>
+		<th></th>
+	  </tr>
+
+	  <tr>
+		<% if transaction.job != nil %>
+			<td><a class="modal-display" href="<%= url_for(transaction.job) %>"><%= transaction.job.title %></a></td>
+		<% else %>
+			<td>N/A</td>
+		<% end %>
+		<%if transaction.is_system %>
+			<td>System</td>
+		<% else %>
+			<td><% if transaction.from != nil %><%= transaction.from.email %><% end %></td>
+		<% end %>
+		<td><% if transaction.to != nil %><%= transaction.to.email %><% end %></td>
+		<td>
+		<%if transaction.from == @u %> 
+			<span class="negative"><%= "-" %> <%= transaction.amount %></span>
+		<% else %>
+			<%= transaction.amount %>
+		<% end %>
+		<td><%= link_to 'Show', transaction, :class=> "btn btn-info modal-display" %></td>
+		
+		<td><% if can? :edit, @transaction %><%= link_to 'Edit', edit_transaction_path(transaction), :class=> "btn btn-success " %><% end %></td>
+		<td><% if can? :destroy, @transaction %><%= link_to 'Destroy', transaction, confirm: 'Are you sure?', method: :delete, :class=> "btn btn-danger" %><% end %></td>
+	  </tr>
+	</table>
+
+<% else %>
+Sorry, transaction not found.
+	
+<% end %>
+

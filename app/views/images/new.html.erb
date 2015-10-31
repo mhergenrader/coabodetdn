@@ -1,0 +1,25 @@
+<h1>Upload a new image</h1>
+
+<% if @image.errors.any? %>
+  <div id="errorExplanation">
+    <h2><%= pluralize(@image.errors.count, "error") %> prohibited this image from being uploaded:</h2>
+    <ul>
+    <% @image.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+
+<%= form_for [@user_profile,@image], :method => 'post', :html => {'multipart' => true} do |f| %>
+	Name: <p><%= f.text_field :name %></p>
+	Description: <p><%= f.text_field :image_description %></p>
+	Image: <p><%= f.file_field :image %></p>
+	<p><%= f.check_box :profile_picture %> Profile picture?</p>
+	<% if @has_profile_image %>
+		<p>NOTE: checking this box will replace your current profile picture with this uploaded one</p>
+	<% end %>
+	<p><%= f.submit 'Upload' %></p>
+<% end %>

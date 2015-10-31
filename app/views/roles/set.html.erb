@@ -1,0 +1,42 @@
+
+<h1>Set User Role</h1>
+<hr/>
+
+
+<% if user_signed_in? %>
+	<p id="notice"><%= notice %></p>
+	
+	Hello, <%= current_user.email %><br/>
+	Your current role is: 
+	<pre>
+	<%= current_user.roles %>
+	</pre>
+
+
+	<table class="table">
+	  <tr>
+		<th>Name</th>
+		<th>Is Role</th>
+		<th></th>
+		<th></th>
+	  </tr>
+	  
+	<%= form_for :role  do |f| %>
+		<% @roles.each do |role| %>
+		  <tr>
+			<td><%= role.name %></td>
+			<td><%= f.radio_button nil, role.id, :name=> 'role', :checked => (current_user.role? role.name.to_sym) %></td>
+		  </tr>
+		<% end %>
+		
+		</table>
+		<div class="form-actions buttons">
+				<button class="action green">
+				<span class="label upper">Save Changes</span>
+				</button>
+			</div>
+		
+	<% end %>
+
+<% end %>
+

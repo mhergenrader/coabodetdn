@@ -1,0 +1,181 @@
+	<div class="span3 hidden-phone">
+		<div class="feed-sidebar">
+		<div class="profile row">
+			<a class="profile-link" href="<%= "/profiles/" %>">
+				<div class="profile-img span1">
+					<% if not get_current_user_profile_pic.nil? %>
+						<%= image_tag(get_current_user_profile_pic.image_url(:small_thumb).to_s, :border => 0) %>
+					<% else %>
+						<%= image_tag('no_profile_image_small_thumb.png', :border => 0) %>
+					<% end %>
+				</div>
+				<h2 class="span2">
+					<%= current_user.first_name %>
+					<%= current_user.last_name %>
+				</h2>
+				<small class="span2">
+					(<%= current_user.username %>)
+				</small>
+			</a>
+		</div>
+		
+		
+		
+		
+
+		<ul class="nav nav-list">
+
+			<% if current_user.role? :admin %>
+			<li class="nav-header status admin">ADMIN</li>
+			<% end %>
+			
+			<li class="nav-header status tdn"><a href="/transactions"><i class="icon-transaction-inverse"></i><%= current_user.time_dollars %> Time Dollars</a></li>
+			<% unread_notifications = current_user.unread_notifications %>
+			<% if  unread_notifications > 0  %>
+			<li class="nav-header status notification"><a href="/"><i class="icon-asterisk icon-white"></i>You have <%= unread_notifications %> unread Notification<% if unread_notifications > 1 %>s<%end %></a></li>
+			<% end %>
+			<% unread_messages = current_user.unread_messages %>
+			<% if  unread_messages > 0  %>
+			<li class="nav-header status message"><a href="/messages"><i class="icon-envelope icon-white"></i>You have <%= unread_messages %> unread Message<% if unread_messages > 1%>s<% end %></a></li>
+			<% end %>
+			
+			
+
+			<li class="nav-header <% if params[:controller].to_sym == :welcome and controller.action_name.to_sym == :index %>active<% end %>">
+			<a href="/"><i class="icon-list-alt"></i>News Feed</a>
+			</li>
+			<li class="nav-header">
+				<i class="icon-map-marker"></i> My Services
+			</li>
+			<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :index %>active<% end %>"><a href="/jobs">Search for a Service To Do</a></li>
+			<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :area %>active<% end %>"><a href="/jobs/search/area">Search for a Service To Do Around an Area</a></li>
+			<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :posted %>active<% end %>"><a href="/jobs/posted">My Posted Service Requests</a></li>
+			<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :applied %>active<% end %>"><a href="/jobs/applied">My Applied Service Requests</a></li>
+			<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :new %>active<% end %>" ><%= link_to 'Create a New Service Request', new_job_path %></li>
+			<% if params[:controller].to_sym == :jobs and (controller.action_name.to_sym == :show or controller.action_name.to_sym == :edit)  %>
+			<li  class="active" >
+				<a href="#">
+				<%= controller.action_name.capitalize %>ing Service Request
+				</a>
+			</li>
+			<% end %>
+			
+			
+
+			<li class="divider"></li>
+			<li class="nav-header">
+				<i class="icon-gift"></i> My Transactions
+			</li>
+			<li  class="<% if params[:controller].to_sym == :transactions and controller.action_name.to_sym == :index %>active<% end %>" >
+				<a href="/transactions">
+				My Transactions
+				</a>
+			</li>
+			<li  class="<% if params[:controller].to_sym == :transactions and controller.action_name.to_sym == :new %>active<% end %>" >
+				<a href="/transactions/new">
+				Create New Transaction
+				</a>
+			</li>
+
+			<% if params[:controller].to_sym == :transactions and (controller.action_name.to_sym == :show or controller.action_name.to_sym == :edit)  %>
+			<li  class="active" >
+				<a href="#">
+				<%= controller.action_name.capitalize %>ing Transaction
+				</a>
+			</li>
+			<% end %>
+			
+			<li class="divider"></li>
+			<li class="nav-header">
+				<i class="icon-envelope"></i>My Messages
+			</li>
+			
+				<li class="<% if params[:controller].to_sym == :messages and controller.action_name.to_sym == :index %>active<% end %>" ><a href="/messages">Inbox</a></li>
+				<li class="<% if params[:controller].to_sym == :messages and controller.action_name.to_sym == :new %>active<% end %>" ><%= link_to 'New Message', new_message_path %></li>
+				<li class="<% if controller.action_name.to_sym == :sent %>active<% end %>"><a href="/messages/sent">Sent Messages</a></li>
+			
+			<% if params[:controller].to_sym == :messages and (controller.action_name.to_sym == :show or controller.action_name.to_sym == :edit)  %>
+			<li  class="active" >
+				<a href="#">
+				<%= controller.action_name.capitalize %>ing Message
+				</a>
+			</li>
+			<% end %>
+			
+			
+			
+			<li class="divider"></li>
+			<li class="nav-header">
+				<i class="icon-user"></i>My Profile
+			</li>
+				
+			<li><a id="my_profile_link" href="<%= "/profiles/" %>">My Profile</a></li>
+			<li><a href="<%= "/search/" %>">Search Users</a></li>
+	
+	
+			
+			<li class="divider"></li>
+			<li class="nav-header">
+				<i class="icon-gift"></i> Dispute Center
+			</li>
+			<li  class="<% if params[:controller].to_sym == :disputes and controller.action_name.to_sym == :new %>active<% end %>" >
+				<a href="/disputes/new">
+				Create New Dispute
+				</a>
+			</li>
+			<li  class="<% if params[:controller].to_sym == :disputes and controller.action_name.to_sym == :new %>active<% end %>" >
+				<a href="/disputes/dispute_list">
+				Disputes Involving Me
+				</a>
+			</li>
+			
+			
+			<li class="divider"></li>
+			
+			<% if current_user.role? :admin %>
+			<li class="nav-header">
+				<i class="icon-cog"></i>Administration
+			</li>
+			<li class="divider"></li>
+			<li class="nav-header" ><i class="icon-user"></i> Managing Roles </li>
+			<li class="<% if params[:controller].to_sym == :roles and controller.action_name.to_sym == :index %>active<% end %>"><a href="/roles">All Roles</a></li>
+			<li class="<% if params[:controller].to_sym == :roles and controller.action_name.to_sym == :new %>active<% end %>"><%= link_to 'New Role', new_role_path %></li>
+			<li class="<% if params[:controller].to_sym == :roles and controller.action_name.to_sym == :set %>active<% end %>"><a href="/roles/set">Set My Role</a></li>
+			<li class="<% if params[:controller].to_sym == :roles and controller.action_name.to_sym == :choose_user_and_set_role %>active<% end %>"><a href="/roles/choose_user_and_set">Choose User and Set Role</a></li>
+	
+			<li class="nav-header" ><i class="icon-user"></i> Managing Users </li>
+			<li class="<% if request.fullpath == "/user/allusers" %>active<% end %>"><a href="/user/allusers" >View All Users</a></li>
+			<li class="<% if request.fullpath == "/user/allusers_advanced" %>active<% end %>"><a href="/user/allusers_advanced" >View All Users (Advanced)</a></li>
+			
+			
+			<li class="nav-header" ><i class="icon-map-marker"></i> Managing Services </li>
+			<li class="<% if request.fullpath == "/jobs/alljobs" %>active<% end %>"><a href="/jobs/alljobs" >View All Services</a></li>
+	
+	
+			<li class="nav-header" ><i class="icon-question-sign"></i>Service Categories </li>
+			<li class="<% if request.fullpath == "/categories" %>active<% end %>"><a href="/categories" >View All Categories</a></li>
+	
+			<li class="nav-header" > <i class="icon-gift"></i> Transactions</li>
+			<li class="<% if request.fullpath == "/transactions/admin" %>active<% end %>"><a href="/transactions/admin" >View All Transactions</a></li>
+			<li class="<% if request.fullpath == "/transactions/admin/analytics" %>active<% end %>"><a href="/transactions/admin/analytics">Analytics</a></li>
+			<li class="<% if request.fullpath == "/transactions/admin/view_user" %>active<% end %>"><a href="/transactions/admin/view_user">Transactions by User</a></li>
+			
+			<li class="nav-header" ><i class="icon-user"></i> Managing Disputes </li>
+			<li class="<% if request.fullpath == "/disputes/admin_list" %>active<% end %>"><a href="/disputes/admin_list" >View All Disputes</a></li>
+			
+			<li class="nav-header <% if params[:controller].to_sym == :questions and controller.action_name.to_sym == :index %>active<% end %>" ><a href="/admin/questions"> <i class="icon-question-sign"></i> Questions</a></li>
+					
+			
+			<li class="nav-header <% if params[:controller].to_sym == :feedback_forms and controller.action_name.to_sym == :index %>active<% end %>" ><a href="/admin/feedback_forms"> <i class="icon-list-alt"></i> Feedback Forms</a></li>
+			<!-- params[:controller].to_sym -->
+			<!-- controller.action_name.to_sym -->			
+			<% end %>
+			
+			
+					
+			
+			
+		</ul>
+
+		</div>
+	</div>

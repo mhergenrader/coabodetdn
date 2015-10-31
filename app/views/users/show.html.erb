@@ -1,0 +1,79 @@
+<div id="wrapper">
+<p id="notice">User Account Info<%= notice %></p>
+
+	<form class="form-horizontal">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Email Address that you will be contacted at." for="textarea">Email:</label>
+				<div class="controls">
+					<%= @user.email %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your username will be shown to other users.">Username:</label>
+				<div class="controls">
+					<%= @user.username%>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your first name.">First Name</label>
+				<div class="controls">
+					<%= @user.first_name %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your last name" for="textarea">Middle Name</label>
+				<div class="controls">
+					<%= @user.middle_name %>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your last name" for="textarea">Last Name</label>
+				<div class="controls">
+					<%= @user.last_name %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your Date of Birth" for="textarea">Date of Birth</label>
+				<div class="controls">
+					<%= @user.date_of_birth %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your ethnicity" for="textarea">Ethnicity</label>
+				<div class="controls">
+					<%= @user.ethnicity %>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your city of residence" for="textarea">City</label>
+				<div class="controls">
+					<%= @user.city %>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your state of residence." for="textarea">State</label>
+				<div class="controls">
+					<%= @user.state %>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Your zipcode." for="textarea">Zip Code</label>
+				<div class="controls">
+					<%= @user.zip_code %>
+				</div>
+			</div>
+
+
+		
+		
+		</fieldset>
+	</form>
+<%= link_to 'Edit', 'users/edit' %>
+<%= link_to 'Back', jobs_path %>
+</div>

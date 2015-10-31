@@ -1,0 +1,64 @@
+<h1>Service Request Listings</h1>
+<hr/>
+<script>
+$(function() {
+
+		$('#service-listings').masonry({
+		  itemSelector: '.span3'
+		});
+});
+</script>
+
+<div id="service-listings" class="row visible-desktop">
+<% @jobs.each do |j| %>
+<div class="span3">
+	<div class="service-listing">
+		<h2><%= j.title %></h2>
+		<p class="visible-desktop">
+		<%= j.description %>
+		</p>
+		
+		<p class="visible-phone">
+		<%= j.description[0,140] %> &hellip;
+		</p>
+		
+		
+		
+		<div class="buttons">
+		<a class="button left"><span class="label"><i class="icon-transaction"></i><%= j.price%></span></a>
+		<a href="<%= url_for(j) %>" class="button action green right"><span class="label"> View</span></a>
+		</div>
+		
+		
+	</div>
+</div>
+<% end %>
+</div>
+
+
+<div id="service-listings-mobile" class="row visible-phone">
+<% @jobs.each do |j| %>
+<div class="span3">
+	<div class="service-listing">
+		<h2><%= j.title %></h2>
+		<p class="visible-desktop">
+		<%= j.description %>
+		</p>
+		
+		<p class="visible-phone">
+		<%= j.description[0,140] %> &hellip;
+		</p>
+		
+		
+		
+		<div class="buttons">
+		<a class="button left"><span class="label"><i class="icon-transaction"></i><%= j.price%></span></a>
+		<a href="<%= url_for(j) %>" class="button action green right"><span class="label"> View</span></a>
+		</div>
+		
+		
+	</div>
+</div>
+<% end %>
+
+</div>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <%= stylesheet_link_tag    "application" %>
+  <%= stylesheet_link_tag    "coabode" %>
+  <%= javascript_include_tag "application" %>
+
+  <%= csrf_meta_tags %>
+    <meta charset="utf-8">
+    <title>CoAbode Time Dollar Network</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+ 
+
+    <!-- Le fav and touch icons -->
+     <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	
+
+    
+  </head>
+
+  <body>
+	 <%= render :partial => "shared/topbar" %>
+	
+		<div class="container" id="main-wrapper">
+			<div class="row">
+				<%= render :partial => "shared/sidebar" %>
+				<div class="span9">
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+
+	    <footer>
+		<hr/>
+		<div class="container">
+          <p>&copy; CoAbode 2012</p>
+		</div>
+      </footer>
+	      <div class="modal" id="dialog">
+					<a class="close" data-dismiss="modal">x</a>
+
+			<div class="modal-body">
+			
+			</div>
+	
+			
+		</div>
+		
+				
+			<div class="modal error-modal" id="error-dialog">
+				<div class="modal-header">
+				<a class="close" data-dismiss="modal" href="#">x</a>
+					<h3>We're sorry, but an error occurred.</h3>
+				</div>
+				<div class="alert alert-error">
+				<div class="modal-body">
+				<%= flash[:error] %>
+				</div>
+				</div>
+			</div>
+    </div>
+
+  </body>
+</html>

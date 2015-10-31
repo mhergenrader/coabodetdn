@@ -1,0 +1,11 @@
+app/assets/images
+config/initializers
+db/migrate
+db/development.sqlite
+doc
+lib/assets
+lib/tasks
+log
+public/images
+public/img
+public/uploads

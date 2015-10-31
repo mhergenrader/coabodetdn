@@ -1,0 +1,61 @@
+<%= form_for @transaction , :html => { :class => "form-horizontal" } do |f| %>
+  <% if @transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+      <ul>
+      <% @transaction.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field control-group">
+    <%= f.label :service_id, :class => "control-label" %>
+	 <%= f.select  :service_id , current_user.jobs.collect { |j| [j.title, j.id] }, {},  :class=> "controls", :include_blank=> true  %>
+  </div>
+  <% if current_user.role? :admin %>
+	<div class="field control-group">
+		<%= f.label :sender_id, :class => "control-label" %>
+		<%= f.number_field :sender_id, :value => current_user.id,  :class=> "controls" %>
+	</div>
+  <% end %>
+  <div class="field control-group">
+    <%= f.label :receiver_id , :class => "control-label" %>
+    <%= f.select  :receiver_id , User.all.collect { |u| [u.email, u.id] }, {},  :class=> "controls", :include_blank=> true  %>
+  </div>
+  <div class="field control-group">
+    <%= f.label :amount , "Hours Completed", :class => "control-label" %>
+    <%= f.text_field :amount,   :class=> "controls" %>
+  </div>
+<% @feedback_questions.each do |q|%>
+  <div id="<%= q[:question_type] + '_question_'+q[:id].to_s %>" class="feedback_question_div field control-group">
+
+  <h3><%= q[:text] %></h3>
+  <% if q[:question_type] == 'TEXT' %>
+        <textarea class="response" id="<%= 'answer_'+q[:id].to_s %>"></textarea>
+  <% elsif q[:question_type]=='MC' %>
+        <% get_choices_list_for_question(q[:id]).each do |c| %>
+          <p><input id="<%= "question#{q[:id]}_choice_#{c}" %>" type="radio" name="<%= 'mc_choices_' + q[:id].to_s %>"/> <%= c %></p>
+        <% end %>
+  <% else %>
+        <% get_choices_list_for_question(q[:id]).each do |c| %>
+          <p><input id="<%= "question#{q[:id]}_choice_#{c}" %>" class="response" type="checkbox" /> <%= c %></p>
+        <% end %>
+  <% end %>
+  <p> Do you have any comments? </p>
+  <textarea class = "comments" id="<%= 'comments_'+q[:id].to_s %>"></textarea>
+  </div>
+ <% end %> 
+  
+  <% if current_user.role? :admin %>
+  <div class="field control-group">
+    <%= f.label :is_system , :class => "control-label" %>
+    <%= f.check_box :is_system,  :class=> "controls" %>
+  </div>
+  <% end %>
+  
+  <div class="form-actions">
+    <%= f.submit "Send", :class => "btn btn-primary" %>
+  </div>
+<% end %>

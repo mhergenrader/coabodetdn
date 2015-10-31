@@ -1,0 +1,49 @@
+<h1>Viewing Template #<%= @notification_template.id %></h1>
+<hr/>
+
+
+<p id="notice"><%= notice %></p>
+
+
+<table class="table-striped table">
+	<tr>
+		<th width="15%">Template</th>
+		<td><%= @notification_template.template %></td>
+	</tr>
+	<tr>
+		<th>Attributes in Template</th>
+		<td>
+			<% @matches = @notification_template.template.scan(/@[a-zA-Z_]+/) %>
+			<% @matches.each do |m| %>
+				<%= m[1, m.size] %>
+			<% end %>
+		</td>
+	</tr>
+	<tr>
+		<th>Max Arguments</th>
+		<td><%= @notification_template.max_arguments %></td>
+	</tr>
+	<tr>
+		<th>Create Notifcation at Method</th>
+		<td><%= @notification_template.method %></td>
+	</tr>
+	<tr>
+		<th>Model</th>
+		<td><%= @notification_template.model %></td>
+	</tr>
+	<tr>
+		<th>User Attribute</th>
+		<td><%= @notification_template.to_attr %></td>
+	</tr>
+	<tr>
+		<th>Link Attribute</th>
+		<td><%= @notification_template.link_attr %></td>
+	</tr>
+</table>
+
+
+
+
+
+<%= link_to 'Edit', edit_notification_template_path(@notification_template), :class => "btn btn-success" %> |
+<%= link_to 'Back', notification_templates_path, :class => "btn btn-inverse" %>

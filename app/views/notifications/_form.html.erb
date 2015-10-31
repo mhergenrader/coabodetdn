@@ -1,0 +1,44 @@
+<%= form_for @notification  , :html => { :class => "form-horizontal" } do |f| %>
+  <% if @notification.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@notification.errors.count, "error") %> prohibited this notification from being saved:</h2>
+
+      <ul>
+      <% @notification.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field control-group">
+    <%= f.label :template_id , :class => "control-label" %>
+    <%= f.select  :template_id , NotificationTemplate.all.collect { |n| [n.template, n.id] }, {},  :class=> "controls span6", :include_blank=> true  %>
+  </div>
+  <div class="field control-group">
+    <%= f.label :user_id , :class => "control-label" %>
+    <%= f.select  :user_id , User.all.collect { |u| [u.email, u.id] }, {},  :class=> "controls span6", :include_blank=> true  %>
+  </div>
+  <div class="field control-group">
+    <%= f.label :lookup_id, :class => "control-label" %><br />
+    <%= f.number_field :lookup_id,  :class=> "controls span6" %>
+  </div>
+  <div class="field  control-group">
+    <%= f.label :message , :class => "control-label" %><br />
+    <%= f.text_area :message,  :class=> "controls span6", :rows => 5 %>
+  </div>
+  <div class="field  control-group">
+    <%= f.label :inner_links , :class => "control-label" %><br />
+    <%= f.text_field :inner_links,  :class=> "controls span6" %>
+  </div>
+  <div class="field  control-group">
+    <%= f.label :link_id , :class => "control-label" %><br />
+    <%= f.number_field :link_id,  :class=> "controls span6" %>
+  </div>
+  <div class="field  control-group">
+    <%= f.label :type , :class => "control-label" %><br />
+    <%= f.text_field :type,  :class=> "controls span6" %>
+  </div>
+  <div class="form-actions">
+    <%= f.submit :value=> "Submit", :class=> "btn btn-success" %>
+  </div>
+<% end %>

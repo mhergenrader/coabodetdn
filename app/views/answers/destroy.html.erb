@@ -1,0 +1,12 @@
+<!-- only temporary -->
+<% if user_signed_in? %>
+
+<h1>Deleting answer...</h1>
+
+<p>Question info: <%= @question.attributes %></p>
+<p>Answer: <%= @current_answer.nil? ? 'no answer' : @current_answer.attributes %></p>
+<p>Status: <%= @save_status %></p>
+
+<p><%= link_to 'Return to Profile', profile_path(@profile.id) %>
+
+<% end %>

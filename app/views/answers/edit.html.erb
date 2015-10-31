@@ -1,0 +1,74 @@
+<!-- edit a response to a particular profile question for a specified, logged-in user -->
+
+<% if user_signed_in? %>
+	<div id="question_area">
+		<h2><%= @question.text %></h2>
+		
+		<% if @question.question_type == "TEXT" %>
+			<%= form_for [@profile, @answer], :method => 'put', :url => { :action => 'update' } do |f| %>
+				<%= f.label :response %>
+				<%= f.text_area :response, :cols => 90, :rows => 5 %> <!-- TODO: resize default for columns, since won't work here -->
+				<div id="comments_area">
+			  		<p><strong>Do you have any additional comments?</strong></p>
+			  		<%= f.text_area :comments, :cols => 90, :rows => 5 %>
+			  	</div>
+			  	<%= hidden_field_tag 'question_type', @question.question_type %>
+			  	<%= link_to "Previous: #{@prev_question.short_name}", edit_profile_answer_path(@profile.id,@prev_question.id), :id => "previous_question_#{@prev_question.id}", :class => 'advance_button ' + @prev_question[:class] %>
+			  	<%= link_to "Next: #{@next_question.short_name}", edit_profile_answer_path(@profile.id,@next_question.id), :id => "next_question_#{@next_question.id}", :class => 'advance_button ' + @next_question[:class] %>
+			<% end %>
+		<% elsif @question.question_type == "MC" %>
+			<%= form_for [@profile,@answer], :method => 'put', :url => { :action => 'update' }  do |f| %>
+				<% if @options.nil? %>
+					<%= @error_message %>
+				<% else %>
+					<% @options.each do |option| %>
+						<p><%= f.radio_button :response, option, { :class => 'profile_question' } %>
+						<label class="profile_question_label" for="<%= 'answer_response_' + option.downcase.gsub(' ','_') %>"><%= option %></label></p>
+					<% end %>
+				<% end %>
+				<div id="comments_area">
+			  		<p><strong>Do you have any additional comments?</strong></p>
+			  		<%= f.text_area :comments, :cols => 90, :rows => 5 %>
+			  	</div>
+			  	<%= hidden_field_tag 'question_type', @question.question_type %>
+			  	<%= link_to "Previous: #{@prev_question.short_name}", edit_profile_answer_path(@profile.id,@prev_question.id), :id => "previous_question_#{@prev_question.id}", :class => 'advance_button ' + @prev_question[:class] %>
+			  	<%= link_to "Next: #{@next_question.short_name}", edit_profile_answer_path(@profile.id,@next_question.id), :id => "next_question_#{@next_question.id}", :class => 'advance_button ' + @next_question[:class] %>			
+			<% end %>
+		<% else %>
+			<%= form_for [@profile,@answer], :method => 'put', :url => { :action => 'update' }  do |f| %>
+				<% if @options.nil? %>
+					<%= @error_message %>
+				<% else %>
+					<% @options.each do |option| %>
+						<p><%= f.check_box :response, { :multiple => true, :checked => (@user_response.nil? ? false : @user_response.include?(option)), :class => 'profile_question' }, option %>
+						<label class="profile_question_label" for="<%= 'answer_response_' + option.downcase.gsub(' ','_') %>"><%= option %></label></p>
+					<% end %>
+				<% end %>
+				<div id="comments_area">
+			  		<p><strong>Do you have any additional comments?</strong></p>
+			  		<%= f.text_area :comments, :cols => 90, :rows => 5 %>
+			  	</div>
+			  	<%= hidden_field_tag 'question_type', @question.question_type %>
+			  	<%= link_to "Previous: #{@prev_question.short_name}", edit_profile_answer_path(@profile.id,@prev_question.id), :id => "previous_question_#{@prev_question.id}", :class => 'advance_button ' + @prev_question[:class] %>
+			  	<%= link_to "Next: #{@next_question.short_name}", edit_profile_answer_path(@profile.id,@next_question.id), :id => "next_question_#{@next_question.id}", :class => 'advance_button ' + @next_question[:class] %>
+			<% end %>
+		<% end %>
+	</div>
+	
+	<div id="other_questions_area" class="todo-popover" data-original-title="Quick Question Links"
+			data-content="<%= current_user.first_name %>, these are quick navigation links to questions that you can answer. 
+						  The colors correspond to the extent to which you've answered a question:
+						  <ul>
+						  	<li><strong>Green</strong> represents <strong>complete</strong> answers.</li>
+						  	<li><strong>Orange</strong> represents answers that <strong>lack either a response or comments</strong>.</li>
+						  	<li><strong>Red</strong> represents questions <strong>not yet attempted</strong>.</li>
+						  </ul> The more you answer, the better your site experience will be! And don't worry: we'll save your answers no matter what link you click!"> <!-- show the user all questions that they have answered -->
+		<h2>All questions</h2>		
+		<ul id="other_questions_list">	 <!-- TODO: add classes based on whether completed or not -->
+			<% @all_question_names.each do |oq| %><!-- will be remote soon -->
+				<li class="other_question"><%= link_to oq.short_name, edit_profile_answer_path(@profile.id,oq.id), :class => oq[:class] %></li> <!-- this is a get request; will handle the putting/posting on page unload in javascript -->
+			<% end %> <!-- removing li class = oq[:class] for now -->
+		</ul>
+	</div>
+	<p id="last_chance"></p>
+<% end %>

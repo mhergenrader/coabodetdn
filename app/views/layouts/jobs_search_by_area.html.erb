@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <%= stylesheet_link_tag    "application" %>
+  <%= stylesheet_link_tag    "coabode" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+    <meta charset="utf-8">
+    <title>CoAbode Time Dollar Network | Services/Jobs</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+ 
+
+    <!-- Le fav and touch icons -->
+      <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	
+	    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDq9vdMRH13AQZV0EbbIGh6EmtB_gDAK-M&sensor=true">
+    </script>
+    
+    
+    <script type="text/javascript">
+	  	var map;  
+	  	var initialLocation;
+		var losangeles = new google.maps.LatLng(34.04185,-118.267136);
+		var browserSupportFlag =  new Boolean();
+		var markersArray = [];
+		var geocoder = new google.maps.Geocoder();
+		var bluemarker = "/images/blue_marker.png";
+		var previous_marker;
+		var previous_mark;
+		var info_window = new google.maps.InfoWindow({content: ''});
+		
+		function initialize() {
+		  var myOptions = {
+		    zoom: 13,
+		    mapTypeId: google.maps.MapTypeId.ROADMAP,
+		    center: losangeles
+		  };
+		  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		  
+		  
+		  	$(".address").each(function(){
+			    var addr = $(this).text();
+			    geocoder.geocode({
+		            address: addr
+		        }, function(locResult) {
+		            console.log(locResult);
+		            var lat = locResult[0].geometry.location.lat();
+		            var lng = locResult[0].geometry.location.lng();
+					newLocation = new google.maps.LatLng(lat, lng);
+					//alert("<%= @job_applicant %>");
+					<% @jobs.each do |job| %>
+					if(addr == "<%= job.address %>")
+						note = "<div id='infowindow'>" +
+						"<table>" +
+						"<legend><%= job.title %></legend>" +
+						"<tr class='infowindow_row'>" +
+							"<td class='infowindow_labels'><h4>Email of Requestor</h4></td>" +
+							"<td class='infowindow_data'> <%= job.user.email %> </td>" +
+						"</tr>" +
+			
+						"<tr class='infowindow_row'>" +
+							"<td class='infowindow_labels'><h4>How much the requestor will pay</h4></td>" +
+							"<td class='infowindow_data'> <%= job.price %> </td>" +
+						"</tr>" +
+						
+						"<tr class='infowindow_row'>" +
+							"<td class='infowindow_labels'><h4>Expiration for Service</h4></td>" +
+							"<td class='infowindow_data'> <%= job.when.month %>/<%= job.when.day %>/<%= job.when.year %> </td>" +
+						"</tr>" +
+			
+						//"<tr class='infowindow_row'>" +
+						//	"<td class='infowindow_labels'><h4>Service Description</h4></td>" +
+						//	"<td class='infowindow_data'> <= job.description %> </td>" +
+						//"</tr>" +
+			
+						"<tr class='infowindow_row'>" +
+							"<td class='infowindow_labels'><h4>Service Address</h4></td>" +
+							"<td class='infowindow_data'> <%= job.address %> </td>" +
+						"</tr>" +
+						
+						"<tr class='infowindow_row'>" +
+							"<td class='infowindow_labels'><h4>Number of workers</h4></td>" +
+							"<td class='infowindow_data'> <%= job.num_of_workers %> </td>" +
+						"</tr>" +
+						"</table>" +
+						"</div>";
+					<% end %>
+					addMarker(newLocation, note);
+					//map.setCenter(newLocation);
+		        });
+		        
+			 });
+
+		 
+			$("tr").click(function () {
+				//deleteOverlays();
+				info_window.close();
+				var lat;
+				var lng;
+				var input = $(this).find("div.address").text();
+				geocoder.geocode({
+		            address: input
+		        }, function(locResult) {
+		            console.log(locResult);
+		            lat = locResult[0].geometry.location.lat();
+		            lng = locResult[0].geometry.location.lng();
+					newLocation = new google.maps.LatLng(lat, lng);
+					map.setCenter(newLocation);
+					mark = findMarker(newLocation);
+					info_window.content = mark.note;
+					if(previous_marker!=null)
+			        {
+			        	previous_marker.setZIndex(0);
+			        	previous_marker.setIcon("/images/blue_marker.png");
+			        	
+			        }
+					mark.setZIndex(1);
+					mark.setIcon("/images/red_marker.png");
+			        
+					info_window.open(map, mark);
+					previous_marker = mark;
+					map.setZoom(13);
+					setAllMap(map);
+					markersArray.push(mark);
+		        });
+		        
+			});
+			
+		} // end of initialize()
+		
+		function addMarker(location, note) {
+		  	var marker = new google.maps.Marker({
+		    position: location,
+		    map: map,
+		    icon: bluemarker,
+		    clickable: true
+		  });
+		  	
+		  	marker.note = note;
+		    google.maps.event.addListener(marker, 'click', function() {
+		        info_window.content = marker.note;
+		        if(previous_marker!=null)
+		        {
+		        	previous_marker.setZIndex(0);
+		        	previous_marker.setIcon("/images/blue_marker.png");
+		        	
+		        }
+		        marker.setZIndex(1);
+		        marker.setIcon("/images/red_marker.png");
+		        
+		        info_window.open(map, marker);
+		        previous_marker = marker;
+		    });
+		  	markersArray.push(marker);
+		  	
+		}
+		
+		function findMarker(location){
+			for (i in markersArray) {
+		      if(markersArray[i].getPosition().lat() == location.lat() &&
+		      	 markersArray[i].getPosition().lng() == location.lng()){
+		      	 return markersArray[i];
+		      	 }
+		    }
+		}
+		
+		function setAllMap(map) {
+	        for (i in markersArray) {
+		      markersArray[i].setMap(map);
+		    }
+	      }
+		
+		// Removes the overlays from the map, but keeps them in the array
+		function clearOverlays() {
+		  if (markersArray) {
+		    for (i in markersArray) {
+		      markersArray[i].setMap(null);
+		    }
+		  }
+		}
+		
+		// Shows any overlays currently in the array
+		function showOverlays() {
+		  if (markersArray) {
+		    for (i in markersArray) {
+		      markersArray[i].setMap(map);
+		    }
+		  }
+		}
+		
+		// Deletes all markers in the array by removing references to them
+		function deleteOverlays() {
+		  if (markersArray) {
+		    for (i in markersArray) {
+		      markersArray[i].setMap(null);
+		    }
+		    markersArray.length = 0;
+		  }
+		}  
+	  
+    </script>
+  </head>
+
+  <body onload="initialize()">
+	   <%= render :partial => "shared/topbar" %>
+	
+		
+     <%= yield %>
+	
+
+	  <footer class="footer">
+          <p>&copy; CoAbode 2012</p>
+      </footer>
+	      <div class="modal" id="dialog">
+					<a class="close" data-dismiss="modal">x</a>
+
+			<div class="modal-body">
+			
+			</div>
+	
+			
+		</div>
+		
+				
+			<div class="modal error-modal" id="error-dialog">
+				<div class="modal-header">
+				<a class="close" data-dismiss="modal" href="#">x</a>
+					<h3>We're sorry, but an error occurred.</h3>
+				</div>
+				<div class="alert alert-error">
+				<div class="modal-body">
+				<%= flash[:error] %>
+				</div>
+				</div>
+			</div>
+    </div>
+
+  </body>
+</html>

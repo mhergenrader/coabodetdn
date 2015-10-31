@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+
+<h3>
+	<%= @message.title %>
+</h3>
+<p>
+	<b><%= @message.author.email %></b> to 
+	
+<%= @message.recipients.map(&:email).join(",") %>
+
+</p>
+<hr/>
+<p>
+  <%= simple_format(@message.content)  %>
+
+</p>
+<hr/>
+
+<%= render 'reply' %>
+
+<%= link_to 'Back', messages_path %>

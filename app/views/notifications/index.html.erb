@@ -1,0 +1,34 @@
+<h1>Listing Notifications</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th>User</th>
+    <th width="50%">Message</th>
+	<th>Type & Link</th>
+	<th>When</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @notifications.each do |notification| %>
+  <tr>
+    <td><%= notification.user%></td>
+    <td><%= notification.message %></td>
+	 <td><%= notification.template.model %>
+
+	 
+	 
+	 
+	 <%= link_to "Show", notification.get_link %></td>
+	<td><%= notification.created_at %> </td>
+    <td><% if can? :show, notification %><%= link_to 'Show', notification, :class=> "btn btn-info" %><% end %></td>
+    <td><% if can? :edit, notification %><%= link_to 'Edit', edit_notification_path(notification), :class=> "btn btn-success" %><% end %></td>
+    <td><% if can? :show, notification %><%= link_to 'Destroy', notification, confirm: 'Are you sure?', method: :delete, :class=> "btn btn-danger" %><% end %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Notification', new_notification_path %>

@@ -1,0 +1,53 @@
+
+		<h1>What's Going On In Your Network</h1>
+		<hr />
+		
+		<table class="table table-bordered table-striped">
+		<tr>
+		<th>What Happened</th>
+		<th>How long ago</th>
+		</tr>
+		<% @notifications.each do |n| %>
+		<tr>
+			
+			<% if n.read == nil %>
+			 <th>
+			<% if n.template.model.to_sym == :JobApplicant %>
+			<i class="icon-map-marker"></i> 
+			<% end %>
+			
+			<% if n.template.model.to_sym == :Transaction %>
+			<i class="icon-transaction"></i> 
+			<% end %>
+			
+			<% if n.template.model.to_sym == :Message %>
+			<i class="icon-envelope"></i> 
+			<% end %>
+			
+			 <%= link_to n.message, n.get_link %>
+			 </th>
+			 <% else %>
+			 <td>
+			 <% if n.template.model.to_sym == :JobApplicant %>
+			<i class="icon-map-marker"></i> 
+			<% end %>
+			
+			<% if n.template.model.to_sym == :Transaction %>
+			<i class="icon-transaction"></i> 
+			<% end %>
+			
+			<% if n.template.model.to_sym == :Message %>
+			<i class="icon-envelope"></i> 
+			<% end %>
+			
+			 <%= link_to n.message, n.get_link %>
+			 </td>
+				<td>
+				<%= distance_of_time_in_words_to_now(n.created_at.in_time_zone("Pacific Time (US & Canada)")) %>
+			   </td>
+			 <% end %> 
+		</tr>
+		<% end %>
+		
+		
+		</table>

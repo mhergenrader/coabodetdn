@@ -1,0 +1,29 @@
+<% if user_signed_in? %>
+	<h1>All Feedback Forms</h1>
+	<hr />
+	
+	<% if not @all_forms.empty? %>
+		<div id="questions_div">
+			<table class="table table-striped" id="questions_table">
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Options</th>
+				</tr>
+				
+				<!-- output each feedback form as one row in the table -->		
+				<% @all_forms.each do |form| %>
+					<tr>
+						<td><%= form.name %></td>
+						<td><%= form.description %></td>
+						<td><%= link_to 'Show', feedback_form_path(form.id), :class=> "btn btn-info" %> <%= link_to 'Edit', edit_feedback_form_path(form.id), :class=> 'btn btn-success' %> <%= link_to 'Remove', feedback_form_path(form.id), :method => :delete, :confirm => 'Are you sure?', :class=> "btn btn-danger" %></td>
+					</tr>
+				<% end %>
+			</table>			
+		</div>
+		<%= link_to 'New Feedback Form', new_feedback_form_path, :class=> 'btn btn-success' %>
+	<% else %>
+		<h2>There are currently no feedback forms. Would you like to <%= link_to 'construct one?', new_feedback_form_path %></h2>
+	<% end %>
+<% end %>
+

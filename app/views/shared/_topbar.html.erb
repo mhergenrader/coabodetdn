@@ -1,0 +1,165 @@
+<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+	  <% if params[:controller] != "jobs" %>
+        <div class="container">
+	  <% elsif controller.action_name.to_sym == :area  %>
+		<div class="container-fluid">
+	  <% else %>
+		<div class="container">
+	  <% end %>
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Time Dollar Network</a>
+		  <% if user_signed_in? %>
+		  <ul class="nav">
+			<li class="top-icon"><a href="/messages"><img  width="16" src="/img/site/message.png" /> </a></li>
+			<li class="top-icon" ><a href="/"><img  width="16" src="/img/site/notification.png" /></a></li>
+			<li class="top-icon"><a href="/jobs"><img width="16" src="/img/site/services.png" /></a></li>
+			
+		  </ul>
+		  <% end %>
+		  
+		  
+          <div class="nav-collapse collapse"> 
+		  
+		  <% if user_signed_in? %>
+		      <form class="navbar-form pull-left" action="/search">
+				<input type="text" class="span3" name="search" placeholder="Search">
+			 </form>
+		    <% end %>
+			
+			
+		
+			
+			
+			
+	  
+        
+			 
+				  <% if user_signed_in? %>
+				   <ul class="nav pull-right">
+					<li class="dropdown visible-desktop">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<%= current_user.first_name + " " + current_user.last_name %>
+						<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="/user">Account Info</a></li>
+							<li><a href="/jobs/posted">My Services</a></li>
+							<li><a href="/messages">My Messages</a></li>
+							<li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+						</ul>
+				    </li>
+					<li class="hidden-desktop" id="mobile-profile-link" />
+					<a href="<%= "/profiles/" %>">
+					<% if not get_current_user_profile_pic.nil? %>
+						<%= image_tag(get_current_user_profile_pic.image_url(:small_thumb).to_s, :border => 0) %>
+					<% else %>
+						<%= image_tag('no_profile_image_small_thumb.png', :border => 0) %>
+					<% end %>
+					
+					
+					<%= current_user.first_name + " " + current_user.last_name %>
+					</a>
+					</li>
+					
+					
+					
+					<li class="dropdown visible-phone">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="icon-map-marker icon-white"></i> My Services
+						<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :index %>active<% end %>"><a href="/jobs">Search for a Service To Do</a></li>
+							<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :area %>active<% end %>"><a href="/jobs/search/area">Search for a Service To Do Around an Area</a></li>
+							<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :posted %>active<% end %>"><a href="/jobs/posted">My Posted Service Requests</a></li>
+							<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :applied %>active<% end %>"><a href="/jobs/applied">My Applied Service Requests</a></li>
+							<li class="<% if params[:controller].to_sym == :jobs and controller.action_name.to_sym == :new %>active<% end %>" ><%= link_to 'Create a New Service Request', new_job_path %></li>
+							<% if params[:controller].to_sym == :jobs and (controller.action_name.to_sym == :show or controller.action_name.to_sym == :edit)  %>
+							<li  class="active" >
+								<a href="#">
+								<%= controller.action_name.capitalize %>ing Service Request
+								</a>
+							</li>
+							<% end %>
+						</ul>
+				    </li>
+					
+					<li class="dropdown visible-phone">
+					  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					  <i class="icon-gift icon-white"></i> My Transactions
+					  <b class="caret"></b>
+					  </a>
+					  <ul class="dropdown-menu">
+					  
+					  <li  class="<% if params[:controller].to_sym == :transactions and controller.action_name.to_sym == :index %>active<% end %>" >
+						  <a href="/transactions">
+						  My Transactions
+						  </a>
+					  </li>
+					  <li  class="<% if params[:controller].to_sym == :transactions and controller.action_name.to_sym == :new %>active<% end %>" >
+						  <a href="/transactions/new">
+						  Create New Transaction
+						  </a>
+					  </li>
+
+					  <% if params[:controller].to_sym == :transactions and (controller.action_name.to_sym == :show or controller.action_name.to_sym == :edit)  %>
+					  <li class="active" >
+						  <a href="#">
+						  <%= controller.action_name.capitalize %>ing Transaction
+						  </a>
+					  </li>
+					  <% end %>
+
+					  </ul>
+				    </li>
+					
+					
+					<li class="dropdown visible-phone">
+					  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					  <i class="icon-envelope icon-white"></i> My Messages
+					  <b class="caret"></b>
+					  </a>
+					  <ul class="dropdown-menu">
+					  
+						<li class="<% if params[:controller].to_sym == :messages and controller.action_name.to_sym == :index %>active<% end %>" ><a href="/messages">Inbox</a></li>
+						<li class="<% if params[:controller].to_sym == :messages and controller.action_name.to_sym == :new %>active<% end %>" ><%= link_to 'New Message', new_message_path %></li>
+						<li class="<% if controller.action_name.to_sym == :sent %>active<% end %>"><a href="/messages/sent">Sent Messages</a></li>
+
+					  </ul>
+				    </li>
+					
+					<li class="dropdown hidden-desktop">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="icon-user icon-white"></i> My Account
+						<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="/user">Account Info</a></li>
+							<li><a href="/jobs/posted">My Services</a></li>
+							<li><a href="/messages">My Messages</a></li>
+							<li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+						</ul>
+				    </li>
+					
+					
+					
+					
+				  </ul>
+				  
+				  
+				
+				  <% else %>
+				  <ul class="nav pull-right">
+					<li id="sign-up-top"><%= link_to "Sign Up", new_user_registration_path %></li>
+					<li><%= link_to "Sign In", new_user_session_path, :class => "modal-dialog" %> </li>
+				  </ul>
+				  <% end %>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>

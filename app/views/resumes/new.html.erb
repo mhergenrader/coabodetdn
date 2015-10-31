@@ -1,0 +1,19 @@
+<h1>Upload a new resume</h1>
+
+<% if @resume.errors.any? %>
+  <div id="errorExplanation">
+    <h2><%= pluralize(@resume.errors.count, "error") %> prohibited this resume from being uploaded:</h2>
+    <ul>
+    <% @resume.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for [@user_profile,@resume], :method => 'post', :html => {'multipart' => true} do |f| %>
+	Name: <p><%= f.text_field :name %></p>
+	Description: <p><%= f.text_field :resume_description %></p>
+	Resume: <p><%= f.file_field :resume %></p>
+	<p><%= f.submit 'Upload' %></p>
+<% end %>

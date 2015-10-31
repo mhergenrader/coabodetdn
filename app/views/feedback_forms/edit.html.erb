@@ -1,0 +1,101 @@
+<% if user_signed_in? %> <!-- TODO: checking for admin role instead -->
+	<h1>Edit Feedback Form</h1>
+	<hr />
+
+	<div id="new_feedback_form_div"> <!-- should be able to reuse this logic/template for editing questions -->
+		<%= form_for @form do |f| %>
+			<%= f.label :name %>
+			<%= f.text_field :name, { :autocomplete => 'off', :placeholder => 'Enter a short identifier', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @form_names } %><p id="short_name_error_message" class="error"></p>
+			<%= f.label :description %>
+			<%= f.text_field :description, { :autocomplete => 'off', :placeholder => 'What is this form for?', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @form_descriptions } %><p id="text_error_message" class="error"></p>
+			
+			<div id="feedback_form_edit_div">
+				<p class="form_heading">Drag question blocks to the right-hand section to add to the feedback form.</p>
+				<div id="filter_questions_div"> <!-- this will appear when a user changes the type to multiple choice or multiple selection -->	
+					<%= text_field_tag :questions_filter, '', { :autocomplete => 'off', :placeholder => 'Filter left side by question name', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_parts } %>
+					<%= text_field_tag :feedback_questions_filter, '', { :autocomplete => 'off', :placeholder => 'Filter right side by question name', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_parts } %>
+				</div>
+				<div id="current_questions_div">
+					<ul id="questions_sortable" class="droptrue">
+						<% @non_feedback_questions.each do |question| %>
+							<li id="<%= "question_#{question.id}" %>" class="ui-state-default"> <!-- used to be short_name -->
+								<a href="<%= (question.short_name + '_dropdown').gsub(' ','_') %>" class="see_question_info_links"><%= question.short_name %> <span class="caret"></span></a>
+								<div id="<%= (question.short_name + '_dropdown').gsub(' ','_') %>" class="question_description">
+									<p class="question_name_p">Question name: <%= question.short_name %></p>
+									<p class="question_text_p">Question text: <%= question.text %></p>
+									<p class="question_type_p">Question type: <%= get_pretty_question_type(question.question_type) %></p>
+									<% if question.question_type != 'TEXT' %>
+										<p class="question_choices_p">Choices: <%= get_all_choices_for_question question.id %></p>
+									<% end %>
+								</div>
+							</li>
+						<% end %>
+					</ul>
+					<ul id="bins_sortable" class="droptrue"> <!-- difference between this and edit -->
+						<% @feedback_questions.each do |question| %>
+							<li id="<%= "question_#{question[:id]}" %>" class="ui-state-default"> <!-- used to be short_name -->
+								<a href="<%= (question[:short_name] + '_dropdown').gsub(' ','_') %>" class="see_question_info_links"><%= question[:short_name] %> <span class="caret"></span></a>
+								<div id="<%= (question[:short_name] + '_dropdown').gsub(' ','_') %>" class="question_description">
+									<p class="question_name_p">Question name: <%= question[:short_name] %></p>
+									<p class="question_text_p">Question text: <%= question[:text] %></p>
+									<p class="question_type_p">Question type: <%= get_pretty_question_type(question[:question_type]) %></p>
+									<% if question[:question_type] != 'TEXT' %>
+										<p class="question_choices_p">Choices: <%= get_all_choices_for_question question[:id] %></p>
+									<% end %>
+								</div>
+							</li>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+			
+			<div id="actions">
+				<%= f.submit 'Create form', { :class => "btn btn-inverse" } %>
+				<a id="preview_new_form" class="btn btn-info" href="#">Preview form</a>
+				<%= link_to 'Cancel', feedback_forms_path, :class => "btn btn-danger" %>
+			</div>
+			
+			<div id="question_creation_div">
+				<p><em>Don't have a question yet? Make one here!</em></p>				
+				<div id="new_question_div">
+					<%= label_tag 'question_short_name' %>
+					<%= text_field_tag 'question_short_name','', { :autocomplete => 'off', :placeholder => 'Enter a short identifier', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_names } %><p id="short_name_error_message" class="error"></p>
+					<%= label_tag 'question_text' %>
+					<%= text_field_tag 'question_text','', { :autocomplete => 'off', :placeholder => 'What will the question say?', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_texts } %><p id="text_error_message" class="error"></p>
+					
+					<p><em>Question domain: Feedback</em></p> <!-- TODO: make a disabled select box -->
+					
+					<%= label_tag 'question_question_type' %>
+					<%= select('question','question_type', [ 'Text','Multiple Choice','Multiple Selection' ], {:prompt => false} ) %>
+					
+					<div id="add_choices_div"> <!-- this will appear when a user changes the type to multiple choice or multiple selection -->
+						<label for="choices_input"><h3>Add choices</h3></label>				
+						
+						<%= text_field_tag 'choices_input', '', { :autocomplete => 'off', :placeholder => 'Add a choice', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @all_choices } %>				
+						<%= link_to 'Add','#', { :id => 'choice_submit', :class=> 'btn btn-success' } %>
+						<%= link_to 'Clear Choices','#', { :id => 'clear_choices', :class=> 'btn btn-danger' } %>
+								
+						<p id="choice_error_message" class="error"></p>				
+						<div id="current_choices_div">
+							<ul class="droptrue" id="current_choices">
+							</ul>
+						</div>
+					</div>
+				</div>				
+				<a id="create_question_link" href="#" class="btn btn-inverse">Add New Question</a>
+			</div>
+		<% end %>		
+	</div>
+	
+	<div id="preview_modal" class="modal hide fade">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">x</a>
+			<h3 id="modal_title"></h3>
+		</div>
+		<div id="preview_modal_body" class="modal-body">
+		</div>
+		<div class="modal-footer">
+			<a href="#" id="close_modal" class="btn">Close</a>
+		</div>
+	</div>	
+<% end %>

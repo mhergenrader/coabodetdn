@@ -1,0 +1,138 @@
+<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+	  <% if params[:controller] != "jobs" %>
+        <div class="container">
+	  <% else %>
+		<div class="container-fluid">
+	  <% end %>
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">Time Dollar Network</a>
+		  <ul class="nav">
+			<li><a href="#">M</a></li>
+			<li><a href="#">N</a></li>
+			<li><a href="#">S</a></li>
+			<% if params[:controller] == "jobs" and params[:action] == "index" %>
+			<li><a href="#">T</a></li>
+			<% end %>
+		  </ul>
+		  
+		  
+          <div class="nav-collapse"> 
+		  
+		  <% if user_signed_in? %>
+		      <form class="navbar-form pull-left" action="/search">
+				<input type="text" class="span3" name="search" placeholder="Search">
+			 </form>
+            <ul class="nav">
+              
+			 
+			  <!--
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Services
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/jobs">Services Home Page</a></li>
+					<li><a href="/jobs/posted">My Posted Services</a></li>
+					<li><a href="/jobs/applied">My Applied Services</a></li>
+					<li><%= link_to 'New Job', new_job_path %></li>
+				</ul>
+			  </li>
+			  
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Transactions
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/transactions">My Transactions</a></li>
+					<li><%= link_to 'New Transaction', new_transaction_path %></li>
+				</ul>
+			  </li>
+			
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Messages
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/messages">My Messages</a></li>
+					<li><%= link_to 'New Message', new_message_path %></li>
+				</ul>
+			  </li>
+			  
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Roles
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="/roles">All Roles</a></li>
+					<li><%= link_to 'New Role', new_role_path %></li>
+					<li><a href="/roles/set">Set My Role</a></li>
+				</ul>
+			  </li>			  
+
+			  
+			  
+			  <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				Profile
+				<b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="<%= "/profiles/" %>">My Profile</a></li>
+					<li><a href="<%= "/search/" %>">Search Users</a></li>
+				</ul>
+			  </li>	
+			 
+			  <% if current_user.role? :admin %>
+				  <li class="dropdown"> 
+					<a href="<%= questions_path %>" class="dropdown-toggle" data-toggle="dropdown">
+					Questions
+					</a>
+				  </li>
+			  <% end %>
+			  
+			  <% end %>
+				-->
+	  
+            </ul>
+			 
+				  <% if user_signed_in? %>
+				   <ul class="nav pull-right">
+				  <!--
+					<% unread_count = current_user.unread_messages()  %>
+				   <li class="<% if unread_count > 0 %>unread<% end %>"><a href="/messages"><%= unread_count %></a></li>
+				  -->
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<%= current_user.email %>
+						<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="/user">Account Info</a></li>
+							<li><a href="/myjobs">My Services</a></li>
+							<li><a href="/messages">My Messages</a></li>
+							<li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+						</ul>
+				    </li>
+				  </ul>
+				  
+				  
+				
+				  <% else %>
+				  <ul class="nav pull-right">
+					<li id="sign-up-top"><%= link_to "Sign Up", new_user_registration_path %></li>
+					<li><%= link_to "Sign In", new_user_session_path, :class => "modal-dialog" %> </li>
+				  </ul>
+				  <% end %>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>

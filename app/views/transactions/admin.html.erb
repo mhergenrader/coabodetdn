@@ -1,0 +1,7 @@
+<h1>Transactions Administration</h1>
+<hr/>
+<% if @page != nil %>
+<%= 	render 'admin_' + @page %>
+<% else %>
+<%= 	render 'admin_index' %>
+<% end %>

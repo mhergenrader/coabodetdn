@@ -1,0 +1,29 @@
+<h1>Listing job_applicants</h1>
+
+<table>
+  <tr>
+    <th>Service</th>
+    <th>Applicant</th>
+    <th>Is hired</th>
+    <th>Is paid</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @job_applicants.each do |job_applicant| %>
+  <tr>
+    <td><%= job_applicant.service_id %></td>
+    <td><%= job_applicant.applicant_id %></td>
+    <td><%= job_applicant.is_hired %></td>
+    <td><%= job_applicant.is_paid %></td>
+    <td><%= link_to 'Show', job_applicant %></td>
+    <td><%= link_to 'Edit', edit_job_applicant_path(job_applicant) %></td>
+    <td><%= link_to 'Destroy', job_applicant, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Job applicant', new_job_applicant_path %>

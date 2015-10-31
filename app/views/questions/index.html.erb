@@ -1,0 +1,36 @@
+<% if user_signed_in? %>
+	<h1>All Profile Questions</h1>
+	<hr />
+	
+	<% if @error_message.nil? %>
+		<% if not @questions.empty? %>
+			<div id="questions_div">
+				<table class="table table-striped" id="questions_table">
+					<tr>
+						<th>Short Name</th>
+						<th>Question Text</th>
+						<th>Type</th>
+						<th>Options</th>
+						<th># Users who have responded</th>
+					</tr>
+					
+					<!-- output each question as one row in the table -->
+					<% @questions.each do |question| %>
+						<tr>
+							<td><%= question.short_name %></td>
+							<td><%= question.text %></td>
+							<td><%= get_pretty_question_type(question.question_type).nil? ? 'ERROR' : get_pretty_question_type(question.question_type) %></td>
+							<td><%= link_to 'Show', question_path(question.id), :class=> "btn btn-info" %> <%= link_to 'Edit', edit_question_path(question.id), :class=> 'btn btn-success' %> <%= link_to 'Remove', question_path(question.id), :method => :delete, :confirm => 'Are you sure?', :class=> "btn btn-danger" %></td>		
+							<td><%= question.count %></td>
+						</tr>
+					<% end %>
+				</table>			
+			</div>
+			<%= link_to 'New Question', new_question_path, :class=> 'btn btn-success' %>
+		<% else %>
+			<h2>There are currently no questions. Would you like to <%= link_to 'create one?', new_question_path %></h2>
+		<% end %>
+	<% else %>
+		<%= 'Something went wrong with the question database: ' + @error_message %>
+	<% end %>
+<% end %>

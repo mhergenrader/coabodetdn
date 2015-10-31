@@ -1,0 +1,39 @@
+
+<h1>Inbox</h1>
+
+<hr/>
+
+<div class="form-actions buttons">
+<a class="button action red" href="/messages/new"><span class="label upper">Compose</span></a>
+</div>
+
+<% if flash[:notice] %>
+<div class="alert alert-error">
+	<%= flash[:notice] %>
+</div>
+<% end %>
+
+<table class="table table-striped">
+  <tr>
+    <th>From</th>
+    <th width="50%">Title</th>
+    <th></th>
+
+  </tr>
+
+<% @messages.each do |message| %>
+
+<tr class="<% if message.read == nil %>unread<% end %>">
+	<td><%= message.author.email %></td>
+	<td><%= link_to h(message.title), message_path(message) %></td>
+	<td><%= distance_of_time_in_words_to_now(message.created_at) %></td>
+</tr>
+<% end %>
+</table>
+
+<div class="page_info">
+	<%= page_entries_info @pages %>
+</div>
+<%= will_paginate @pages, :class => "pagination" %>
+
+<br />

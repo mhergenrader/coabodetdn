@@ -1,0 +1,89 @@
+<h2>Sign up</h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :username %>
+  <%= f.text_field :username %></div>
+  
+  
+  <div class="todo-popover" 
+		data-original-title="Why do we need your email?" 
+		data-content="We'll contact you via email. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :email %>
+  <%= f.email_field :email %></div>
+
+  <div class="todo-popover" 
+		data-original-title="Why do you need a password?" 
+		data-content="You will have currency in the time dollar network and information that will need to be protected. Please choose a password (minimum of 6 characters) that is not password1, or 123456 - choose a GOOD password such as F3&!#X (please dont use F3&!#X as a password)"
+		><%= f.label :password %>
+  <%= f.password_field :password %></div>
+
+  <div><%= f.label :password_confirmation %>
+  <%= f.password_field :password_confirmation %></div>
+  
+    <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :first_name %>
+  <%= f.text_field :first_name %></div>
+  
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :middle_name %>
+  <%= f.text_field :middle_name %></div>
+  
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :last_name %>
+  <%= f.text_field :last_name %></div>
+  
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :date_of_birth %>
+  <%= f.date_select :date_of_birth, :start_year => 1900 %></div>
+  
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :ethnicity %>
+  <%= f.text_field :ethnicity %></div>
+  
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :city %>
+  <%= f.text_field :city %></div>
+  
+  <div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :state %>
+  <%= f.text_field :state %></div>
+
+	<div class="todo-popover" 
+		data-original-title="FIRSTNA MMMMMmmmmmmmmmmmmmmmmmmm?" 
+		data-content="We'll contact you via ygbhnkuvftgybh. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :zip_code %>
+  <%= f.text_field :zip_code %></div>
+  
+  <div><%= f.submit "Sign up" %></div>
+<% end %>
+
+<%= render :partial => "devise/shared/links" %>

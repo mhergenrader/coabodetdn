@@ -1,0 +1,44 @@
+<%= form_for @notification_template, :html => { :class => "form-horizontal" }  do |f| %>
+  <% if @notification_template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@notification_template.errors.count, "error") %> prohibited this notification_template from being saved:</h2>
+
+      <ul>
+      <% @notification_template.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :template, :class => "control-label" %>
+    <%= f.text_area :template, :class => "controls span6", :rows => 5  %>
+  </div>
+   <div class="control-group">
+     <%= f.label :model, :class => "control-label" %>
+    <%= f.text_field :model, :class => "controls span6", :rows => 5  %>
+  </div>
+   <div class="control-group">
+     <%= f.label :to_attr, :class => "control-label" %>
+    <%= f.text_field :to_attr, :class => "controls span6", :rows => 5  %>
+  </div>
+   <div class="control-group">
+     <%= f.label :link_attr, :class => "control-label" %>
+    <%= f.text_field :link_attr, :class => "controls span6", :rows => 5  %>
+  </div>
+  <div class="control-group">
+     <%= f.label :method, :class => "control-label" %>
+    <%= f.text_field :method, :class => "controls span6", :rows => 5  %>
+  </div>
+    <div class="control-group">
+     <%= f.label :use_id_param, :class => "control-label" %>?
+    <%= f.check_box :use_id_param,:class => "controls span6" %>
+  </div>
+  
+  
+  
+  <div class="form-actions">
+    <%= f.submit "Submit", :class => "btn btn-success" %>
+  </div>
+<% end %>

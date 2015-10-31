@@ -1,0 +1,39 @@
+<% if user_signed_in? %>
+	<h1>Details: <%= @form.name %></h1>
+	
+	<div id="feedback_forms_div">		
+		<p>Description: <%= @form.description %></p>
+
+		<p>Created by: <%= get_user_name_by_id(@form.created_by,true) %></p>
+		<p>Created at: <%= @form.created_at.nil? ? 'ERROR' : @form.created_at %></p>
+		<p>Last Modified by: <%= (@form.updated_at == @form.created_at ? 'N/A' : get_user_name_by_id(@form.updated_by)) %></p>
+		<p>Last Modified at: <%= @form.updated_at.nil? ? 'ERROR' : (@form.updated_at == @form.created_at ? 'N/A' : @form.updated_at) %></p>
+		
+		
+		<div id="show_current_questions_div">
+			<h2>Current Questions</h2>
+			<% if not @current_form_questions.empty? %>
+				<table id="form_questions_table" class="table table-striped"> <!-- TODO: include 'move up and down' options (or drag and drop) -->
+					<tr id="question_headings">
+						<th>Question Name</th>
+						<th>Question Text</th>
+						<th>Question Type</th>
+					</tr>
+					<!-- can add the question filters row if desired -->
+					<% @current_form_questions.each do |question| %>
+						<tr>
+							<td class="question_names"><%= question.short_name %></td>
+							<td class="question_texts"><%= question.text %></td>
+							<td class="question_types"><%= get_pretty_question_type question.question_type %></td>
+						</tr>
+					<% end %>
+				</table>
+			<% else %>
+				<p>There are currently no questions stored for this form.</p> <!-- shouldn't ever happen, but just in case -->
+			<% end %>
+		</div>
+		
+		<p><%= link_to 'Edit', edit_feedback_form_path(@form.id) %></p>
+		<p><%= link_to 'View all feedback forms', feedback_forms_path %></p>				
+	</div>
+<% end %>

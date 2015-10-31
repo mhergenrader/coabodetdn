@@ -1,0 +1,36 @@
+<div id="main-wrapper">
+<h1>My Posted Services</h1>
+<table class="table table-striped" >
+<% @jobs.each do |job| %>
+  <tr>
+	<td width="75%">
+	<h3><a class='modal-display' href="<%= url_for(job) %>"><%= job.title %></a></h3>
+	<span class="todo-tooltip" title="Email of Requestor"><%= job.user.email %></span> <br/>
+	<br/>
+		<div class="btn-group todo-popover" 
+		data-original-title="What are options for?" 
+		data-content="Shortcuts; i.e. messaging the user before applying; delete/edit job if its your job; viewing the job">
+          <a class="btn btn-success" href="#"><i class="icon white user"></i>Options</a>
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+			<li><a class='modal-display' href="<%= url_for(job) %>">View</a></li>
+			<% if current_user != nil and  (job.user.id == current_user.id or current_user.role? :admin) %>
+            <li><a href="#"> <%= link_to 'Edit', edit_job_path(job) %></a></li>
+            <li><i class="icon-trash"></i> <%= link_to 'Delete', job, confirm: 'Are you sure?', method: :delete %></li>
+			<% end %>
+          </ul>
+        </div>
+	</td>
+	<td width="25%">
+	<h3 class="todo-tooltip" title="How much the requestor will pay"><%= job.price %></h3>
+	<span class="todo-tooltip" title="When would you need to perform the service by?"><%= job.when.month %>/<%= job.when.day %>/<%= job.when.year %></span>
+	</td>
+  </tr>
+  
+  
+  
+  
+<% end %>
+
+</table>
+</div>

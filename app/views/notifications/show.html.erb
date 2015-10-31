@@ -1,0 +1,64 @@
+<h1>Showing Notification #<%= @notification.id %> </h1>
+<hr/>
+<p id="notice"><%= notice %></p>
+
+
+<table class="table-striped table">
+<tr>
+<td>
+	User
+</td>
+<td>
+  <%= @notification.user %>
+</td>
+</tr>
+
+
+<tr>
+<td>
+	Lookup ID
+</td>
+<td>
+	  <%= @notification.lookup_id %>
+</td>
+</tr>
+
+<tr>
+	<td>Message</td>
+	<td>
+	  <%= @notification.message %>
+	</td>
+</tr>
+<tr>
+	<td>Template</td>
+	<td>
+	<%= @notification.template %>
+	</td>
+</tr>
+<tr>
+	<td>Type</td>
+	<td>
+  <%= @notification.type %>
+	</td>
+</tr>
+<tr>
+	<td>Inner Links</td>
+	<td>
+  <%= @notification.inner_links %>
+	</td>
+</tr>
+<tr>
+	<td>Link</td>
+	<td>
+  <%= @notification.link_id %>
+	</td>
+</tr>
+
+</table>
+
+
+
+
+
+<%= link_to 'Edit', edit_notification_path(@notification) %> |
+<%= link_to 'Back', notifications_path %>

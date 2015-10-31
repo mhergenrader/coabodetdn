@@ -1,0 +1,64 @@
+<div>
+
+	<div class="well">
+		
+		<div class="form-horizontal">
+
+
+<%= form_tag '/search', :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search] ,:class => "input search-query"%>
+    <%= submit_tag "Search", :name => nil , :class => "btn btn-success todo-popover", :onclick=> "codeAddress()"%>
+  </p>
+<% end %>
+		</div>
+	</div>
+<div id="search-results">
+<table class="table table-striped" >
+<% @users.each do |user| %>
+  <tr>
+  	
+  	<td width="15%">  		
+  		<% if not get_profile_pic(user.profile.id).nil? %> <!-- TODO: remove redundant call to helper method - make available in controller -->
+  			<%= link_to image_tag(get_profile_pic(user.profile.id).image_url(:thumb).to_s, :border => 0), profile_path(user.profile.id) %>  			
+  		<% else %>
+  			<%= link_to 'No image available', profile_path(user.profile.id) %>
+  		<% end %>
+  	</td>  	
+  	
+	<td width="60%">
+	<h3><a class='modal-display' href="<%= url_for(user) %>"><%= user.username %></a></h3>
+	<span class="todo-tooltip" title="Email of Requestor"><%= user.email %></span> <br/>
+	<br/>
+		<div class="btn-group todo-popover" 
+		data-original-title="What are options for?" 
+		data-content="Shortcuts; i.e. messaging the user before applying; delete/edit job if its your job; viewing the job">
+          <a class="btn btn-success" href="#"><i class="icon white user"></i>Options</a>
+          <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+			<li><%= link_to "View Profile", profile_path(user.profile) unless user.profile.blank? %></li>
+          </ul>
+        </div>
+	</td>
+	<td width="25%">
+	<h3 class="todo-tooltip" title="First Name Of User"><%= user.first_name %></h3>
+	<span class="todo-tooltip" title="Full Name of User"><%= user.first_name %> - <%= user.middle_name %> - <%= user.last_name %></span>
+	</td>
+  </tr>
+  
+  
+  
+  
+<% end %>
+
+</table>
+		<div class="page_info">
+			<%= page_entries_info @users %>
+	    </div>
+		<%= will_paginate @users, :class => "pagination" %>
+
+
+</div>
+</div>
+
+

@@ -1,0 +1,242 @@
+<% if user_signed_in? %>	
+	
+	<p id="current_profile_id_p"><%= @my_own_profile.id unless @my_own_profile.nil? %></p> <!-- TODO: is there a better way to do this? (make available a param for javascript to parse) (is it safe also?) -->
+	
+	<!-- display profile image and links -->
+	<div id="profile_pic_area">
+		<% if not @image.nil? %>		
+			<%= link_to image_tag(@image.image_url(:profile_pic).to_s, :border => 0), profile_image_path(@user_profile.id,@image.id) %>
+		<% else %>
+			<% if @allow_edit %>
+				<%= link_to image_tag('no_profile_image.png', :border => 0), new_profile_image_path(@user_profile.id) %>
+				<%= link_to '+ Add Profile Photo', new_profile_image_path(@user_profile.id), :id => 'add_photo_link' %>
+			<% else %>
+				<%= image_tag('no_profile_image.png', :border => 0) %>
+			<% end %>		
+		<% end %>
+	</div>	
+	<div id="profile_carousel" class="carousel slide">
+		<% if @image_count > 0 %>
+			<!-- need to do nil checks here! also should probably limit the image count shown (or let user add pics to the carousel -->
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				<% @images.each do |image| %>
+					<% if image.profile_picture %>
+						<div class="active item carousel_pic">
+							<%= image_tag image.image_url(:carousel_pic).to_s %>
+							<div class="carousel-caption">
+				                <h4><%= image.name %><%= ": #{image.image_description}" unless image.image_description.nil? %></h4>
+				            </div>
+						</div>
+					<% else %>
+						<div class="item carousel_pic">
+							<%= image_tag image.image_url(:carousel_pic).to_s %> <!-- always select the profile pic version (300x300) -->
+							<div class="carousel-caption">
+				                <h4><%= image.name %><%= ": #{image.image_description}" unless image.image_description.nil? %></h4> <!-- inserts any describing text here -->
+			                </div>
+						</div>
+					<% end %>
+				<% end %>	
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#profile_carousel" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#profile_carousel" data-slide="next">&rsaquo;</a>
+		<% else %>
+			<%= link_to '+ Add Photos to Personalize Your Page!', new_profile_image_path(@user_profile.id), :id => 'add_carousel_photo_link' if @allow_edit %>		
+		<% end %>
+	</div>
+
+	<!-- beginning of profile information section -->	
+	<div id="profile_info_div">
+		<div id="account_info_section">
+			<h1><%= @user.first_name + ' ' + @user.last_name %></h1>		
+						
+			<div id="account_info">
+				<div id="user_account_facts">
+					<p>Born: <%= @user.date_of_birth %></p>
+					<p>Residing in: <%= @user.city %>, <%= @user.state %> <%= @user.zip_code %></p>
+					<p>Declared ethnicity: <%= @user.ethnicity %></p>
+				</div>
+				<%= link_to 'About', user_path(@user.id), :id => 'about_user_account_link' %>
+				<% if @allow_edit %>
+					<%= link_to 'Edit', '/users/edit', :id => 'edit_user_account_link' %>
+				<% end %>
+			</div>
+			<div id="other_account_links">
+				<div id="view_all_photos_div">
+					<div>
+						<% if not @image.nil? %>
+							<%= link_to image_tag(@image.image_url(:small_thumb).to_s, :class => 'img_center'), profile_images_path(@user_profile.id) %>
+						<% else %>
+							<%= link_to image_tag('no_profile_image_small_thumb.png', :class => 'img_center'), profile_images_path(@user_profile.id) %>
+						<% end %>
+					</div>
+					<p>
+						<%= link_to 'View Photos', profile_images_path(@user_profile.id), :id => 'profile_view_images_link', :class => 'text_center' %>
+					</p>
+				</div>
+				<% if @allow_edit %>
+					<div id="privacy_settings_div">
+						<%= link_to image_tag('privacy_icon.png', :class => 'img_center'), '#' %>
+						<p>
+							<%= link_to 'Privacy Settings', '#', :id => 'privacy_settings_link', :class => 'text_center' %>
+						</p>
+					</div>
+				<% end %>
+			</div>
+			<div id="profile_options_div">
+				<% if @allow_edit %>
+					<%= link_to 'Edit Profile', '#', :id => 'profile_edit_link', :class => 'btn btn-info' %>
+					<%= link_to 'Delete Profile', '#', :id => 'profile_delete_link', :class => 'btn btn-danger', :method => :delete %>
+				<% else %> <!-- TODO: if already followed, can have some sort of dropdown -->
+					<%= render 'follow_form' if signed_in?%>
+				<% end %>
+			</div>
+			
+		</div>
+		
+		<!-- maybe a dark blue, light blue, white color scheme might be more intuitive for the profile page -->
+		
+		<div id="profile_info_section">
+			<ul class="nav nav-pills">
+				<li class="active"><a id="profile_responses_link" href="#"><i class="icon-question-sign"></i> <%= (@allow_edit ? 'My ' : @user.first_name + '\'s ') + 'Profile Responses' %></a></li>			
+				<li class=""><a id="posted_services_link" href="#"><i class="icon-map-marker"></i> <%= (@allow_edit ? 'My ' : @user.first_name + '\'s ') %> Posted Services</a></li>
+				<li class=""><a id="feedback_link" href="#"><i class="icon-user"></i> <%= (@allow_edit ? 'My ' : @user.first_name + '\'s ') %> Feedback</a></li>		
+				<% if @allow_edit %>
+					<li id="resumes_list_item" class="editable"><a id="resumes_link" class="editable" href="#"><i class="icon-list-alt"></i> My Resumes</a></li>				
+				<% end %>
+			</ul>
+			
+			<div id="profile_responses_section">
+				<% if @profile_exists %> <!-- there is at least one question answered -->					
+					<% @all_qa_pairs.each do |a| %>						
+						<div id="<%= "question_answer_pair_#{a[:id]}" %>" class="profile_response_div <%= a[:button_type] %>"> <!-- class tells the extent to which the user has answered this question -->
+							<div class="question_titles" id="<%= "question_answer_title_#{a[:id]}" %>">
+								<h2><%= a[:short_name] %></h2>
+							</div>
+							<div id="<%= "question_answer_response_#{a[:id]}" %>">
+								<p><strong>Question: <%= a[:question] %></strong></p>
+								<p><strong>Response:</strong> <%= (a[:response].empty? ? 'none' : a[:response].gsub('##',', ')) %></p>
+								<p><strong>Comments:</strong> <%= (a[:comments].empty? ? 'none' : a[:comments]) %></p>
+							</div>
+							<% if @allow_edit %>
+								<div class="question_options btn-group">
+									<a class="<%= "question_options_button btn btn-#{a[:button_type]}" %>" id="<%= "#{a[:id]}" %>"><i class="icon white user"></i>Options</a>
+									<a class="<%= "question_options_caret btn btn-#{a[:button_type]} dropdown-toggle" %>" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										<li><%= link_to 'Edit response', edit_profile_answer_path(@user_profile.id,a[:id]) %></li>
+										<li><%= link_to 'Delete response', profile_answer_path(@user_profile.id,a[:id]), :method => :delete, :confirm => 'Are you sure you want to delete your answer for this question? This action cannot be undone.' %></li>
+									</ul>
+								</div>
+							<% else %> <!-- viewing someone else's profile -->
+								
+							<% end %>
+						</div>
+					<% end %>
+					
+					<% if @allow_edit %> <!-- allow user to edit via the interactive section, starting at first unanswered or first if all are already answered to some extent -->
+						<!-- now, if any exist, add links for all unanswered questions -->
+						<% @all_unanswered_questions.each do |q| %>
+							<div class="unanswered_div" id="<%= "unanswered_question_div_#{q[:id]}" %>"> <!-- original link color: danger -->
+								<h2><%= q[:question] %></h2>
+								<div class="question_options_unanswered">
+									<%= link_to 'Answer',edit_profile_answer_path(@user_profile.id,q[:id]), :id => "unanswered_question_link_#{q[:id]}", :class=> "btn btn-danger unanswered-btn" %>							
+								</div>
+							</div>
+						<% end %>
+					<% end %>
+				<% else %> <!-- current profile doesn't exist yet, so nothing to output -->
+					<% if @allow_edit %> <!-- this is my profile: ask me to create a profile -->
+						<h2>You have not yet <%= link_to 'set up your profile', edit_profile_answer_path(@user_profile.id,@first_question_id) %></h2>
+					<% else %> <!-- not my profile: inform me that this user hasn't created a profile yet -->
+						<h2><%= @user.first_name + " " + @user.last_name %> has not yet set up a profile.</h2>
+					<% end %>
+				<% end %>
+			</div>
+			<div id="posted_services_section"> <!-- TODO: user can see all past services for his or her own profile, but only current ones for others -->
+				<% if not @user_postings.empty? %>
+					<table id="postings_table" class="table table-striped">					
+						<tr>
+							<th>Service/Job Name</th>
+							<th>Offering</th>
+							<th>Service Date</th>
+							<th>Created at</th>
+							<th><%= (@allow_edit) ? 'Options' : 'Actions' %></th>
+						</tr>
+						<% @user_postings.each do |posting| %>
+							<tr>
+								<td><%= posting.title %></td>
+								<td><%= posting.price %></td>
+								<td><%= posting.when %></td>
+								<td><%= posting.created_at %></td>
+								<td>
+									<% if @allow_edit %>
+										<%= link_to 'Manage', '/jobs/posted', :class => 'btn btn-info' %>
+									<% else %>
+										<%= link_to 'Details','#', :class => 'btn btn-info' %>
+										<%= link_to 'Apply!','#', :class => 'btn btn-info' %>
+									<% end %>
+								</td>
+							<tr>
+						<% end %>
+					</table>
+				<% else %>
+					<% if @allow_edit %>
+						<h2><%= @user.first_name %>, you currently have no posted services. <%= link_to 'Post one?', new_job_path %></h2>
+					<% else %>
+						<h2><%= @user.first_name + " " + @user.last_name %> currently has no services.</h2> <!-- someone else's profile -->
+					<% end %> <!-- TODO: link to request them to do it -->
+				<% end %>
+			</div>
+			<div id="feedback_section">
+				<% if @feedback_answers_by_question.empty? %>
+					<% if @allow_edit %>
+						<h2><%= @user.first_name %>, you currently have no feedback written about you.</h2> <!-- = link_to 'Post one?', new_job_path %></h2> -->
+					<% else %>
+						<h2><%= @user.first_name + " " + @user.last_name %> currently has no feedback written about them.</h2> <!-- someone else's profile -->
+					<% end %>
+				<% else %>
+					<% @feedback_answers_by_question.each do |question_id,responses| %>
+						<div id="" class=""> <!-- TODO -->
+							<h3><%= get_question_text_from_id question_id %></h3>
+							<% responses.each do |response| %>
+								<p><em>"<%= response[:response] %>"</em></p>
+								<% if not response[:comments].empty? %>
+									<p>Other comments: <%= response[:comments] %></p>
+								<% end %>
+								<p class="rightalign">Written by <em><%= link_to get_user_name_by_profile_id(response[:respondent_id]), profile_path(response[:respondent_id]) %></em> at <%= response[:submitted_at] %></p>
+							<% end %>
+						</div>
+					<% end %>
+				<% end %>
+				
+			</div>
+			<div id="resumes_section">
+				<% if @resume_count > 0 %>
+					<table id="resumes_table" class="table table-striped">
+						<tr>
+							<th>Resume Title</th>
+							<th>Description</th>
+							<th>Uploaded at</th>							
+							<th>File link</th>
+							<th>Options</th>
+						</tr>
+						<% @resumes.each do |resume| %>
+							<tr>
+								<td><%= resume.name %></td>
+								<td><%= resume.resume_description %></td>
+								<td><%= resume.created_at %></td>								
+								<td><%= link_to image_tag('pdficon_large.png'), resume.resume_url.to_s %></td>
+								<td><%= link_to 'Edit', edit_profile_resume_path(@user_profile.id,resume.id), :class=> 'btn btn-success' %> <%= link_to 'Remove', profile_resume_path(@user_profile.id,resume.id), :method => :delete, :confirm => 'Are you sure?', :class=> "btn btn-danger" %></td>
+							</tr>
+						<% end %>
+					</table>
+					<%= link_to 'Upload New Resume', new_profile_resume_path(@user_profile.id), :class=> 'btn btn-info' %>
+				<% else %>
+					<h2><%= @user.first_name %>, you currently have no resumes. <%= link_to 'Upload one?', new_profile_resume_path(@user_profile.id) %></h2>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	
+<% end %>

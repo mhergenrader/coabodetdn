@@ -1,0 +1,29 @@
+// Place all the styles related to the answers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.profile { 
+	margin-bottom:20px;
+}
+
+.profile h2, .profile small { width:168px; }
+
+a.profile-link {
+	padding-top:20px;
+	display:inline-block;
+	overflow:hidden;
+	padding-bottom:20px;
+}
+
+a.profile-link:hover {
+	background:#efefef;
+}
+
+.news-feed { 
+	padding-top:20px;
+}
+
+.feed-sidebar { 
+	border-right:1px solid #efefef;
+}

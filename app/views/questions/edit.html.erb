@@ -1,0 +1,38 @@
+<% if user_signed_in? %> <!-- TODO: checking for admin role instead -->
+	<h1>Edit Question</h1>
+
+	<!-- TODO: could make this a partial -->
+	<div id="edit_question_div"> <!-- should be able to reuse this logic/template for editing questions -->
+		<%= form_for @question, { :class => 'new_question' } do |f| %>
+			<%= f.label :short_name %>
+			<%= f.text_field :short_name, { :autocomplete => 'off', :placeholder => 'Enter a short identifier', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_names } %><p id="short_name_error_message" class="error"></p>
+			<%= f.label :text %>
+			<%= f.text_field :text, { :autocomplete => 'off', :placeholder => 'What will the question say?', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_texts } %><p id="text_error_message" class="error"></p>
+			
+			<%= f.label :domain %>
+			<%= select(:question,:domain, [ Question::UNFILED_DOMAIN.capitalize,Question::PROFILE_DOMAIN.capitalize,Question::FEEDBACK_DOMAIN.capitalize ], {:prompt => false, :selected => (@question.domain.nil? ? Question::UNFILED_DOMAIN.capitalize : @question.domain.capitalize)} ) %>
+			
+			<%= f.label :question_type %>
+			<%= select(:question,:question_type, [ 'Text','Multiple Choice','Multiple Selection' ], {:prompt => false, :selected => get_pretty_question_type(@question.question_type) } ) %>
+			
+			<div id="add_choices_div"> <!-- this will appear when a user changes the type to multiple choice or multiple selection -->
+				<label for="choices_input"><h3>Add choices</h3></label>
+								
+				<%= text_field_tag :choices_input, '', { :autocomplete => 'off', :placeholder => 'Add a choice', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @all_choices }%>				
+				<%= link_to 'Add','#', { :id => 'choice_submit', :class=> 'btn btn-success'} %>
+				<%= link_to 'Clear Choices','#', { :id => 'clear_choices', :class=> 'btn btn-danger' } %>
+								
+				<p id="choice_error_message" class="error"></p>				
+				<div id="current_choices_div">
+					<ul class="droptrue" id="current_choices">
+						<% @current_options.each do |choice| %> <!-- still will be in insertion order -->
+							<li class="choices"><span><%= choice %></span><div class="choice_links"><a class="remove_choice_links" href="#">Remove</a></div></li>
+						<% end %>
+					</ul> <!-- will fill this in only on the front end! need to make sure all are put into a :choices array (hidden field or maybe just through JavaScript?) -->
+				</div>
+			</div>
+			<p><%= f.submit %></p>
+		<% end %>
+		<%= link_to 'Cancel', questions_path %>
+	</div>
+<% end %>

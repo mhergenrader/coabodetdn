@@ -1,0 +1,37 @@
+<script>
+	$(function() {
+$("#startdate").datepicker();
+$("#startdate").datepicker("setDate", new Date());
+$("#enddate").datepicker();
+$("#enddate").datepicker("setDate", new Date());
+	});
+	</script>
+
+
+
+<h2>Charts!</h2>
+
+The total size of the economy is <%= @size_of_economy %> Time Dollars.<br>
+The total number of transactions completed is <%= @total_num_transactions %><br>
+The total volume of TD moved is <%= @total_volume_td %><br>
+The averge TD per transaction is <%= @avg_td_per_transaction %>
+
+
+<% @ntpd_chart.to_js("ntpd_chart") %>
+<div id='ntpd_chart'></div>
+<%= render_chart @ntpd_chart, 'ntpd_chart' %>
+
+<% @vtpd_chart.to_js("vtpd_chart") %>
+<div id='vtpd_chart'></div>
+<%= render_chart @vtpd_chart, 'vtpd_chart' %>
+
+<% @nupd_chart.to_js("nupd_chart") %>
+<div id='nupd_chart'></div>
+<%= render_chart @nupd_chart, 'nupd_chart' %>
+
+
+<form>
+<p>Start Date: <input type="text" id="startdate" ></p>
+<p>End Date: <input type="text" id="enddate"></p>
+<button class="btn btn-success" style="margin-bottom:9px;">Reload Graphs</button>
+</form>

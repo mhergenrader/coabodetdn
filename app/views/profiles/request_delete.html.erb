@@ -1,0 +1,55 @@
+<!-- this page will attempt to find out why the user is deleting their profile -->
+
+<% if user_signed_in? %>
+	<h1>Delete Profile</h1>	
+	
+	<p>At CoAbode, we strive to keep all account and profile information safe and readable to only those that you have specified. We hope you have had a good experience with us. Please be assured that <strong>whatever you select for deletion will be removed from all of our servers</strong> when you submit this form.</p>
+	
+	<!-- TODO: needed? should plan out a better way to contain all of this - tabs are probably the best idea -->
+	<h3>Rather than delete everything, are you trying to do one of the following?</h3>
+	<ol id="other_actions_than_delete_list">
+		<li class="active">
+			<p>Are you experiencing specific problems with the site itself (e.g. crashes)? If so, would you rather just <a href="#" id="report_site_problem_link">tell us about it</a>?</p>
+			<div class="expandable" id="report_form_div">			
+			</div>
+		</li>	
+		<li class="">
+			<p>Are you just trying to <a href="#" id="clear_specific_data_link">clear out specific data</a> from your profile?</p>
+			<div class="expandable" id="clear_data_div">			
+			</div>
+		</li>
+		<li class="">
+			<p>Are other users making your site experience less than wonderful? <a href="#" id="manage_blocked_lists_link">Manage your blocked users</a>.</p>
+			<div class="expandable" id="manage_blocked_users_div">
+			</div>
+		</li>
+		<!--<li class="">
+			<p>Delete your entire profile.</p>
+			<div class="expandable" id="delete_profile_div">			
+			</div>
+		</li>-->
+	</ol>
+	
+	<div id="delete_options_pane">
+		<ul class="nav nav-pills">
+			<li class="active"><a id="report_problem_link" href="#"><i class="icon-pencil"></i> Report problem</a></li>			
+			<li class=""><a id="clear_data_link" href="#"><i class="icon-file"></i> Clear out specific profile data</a></li>
+			<li class=""><a id="manage_blocks_link" href="#"><i class="icon-remove"></i> Manage blocked list</a></li>
+			<li class=""><a id="delete_profile_link" class="editable" href="#"><i class="icon-trash"></i> Delete entire profile</a></li>
+		</ul>
+	</div>
+	
+	<div id="report_problem_div">
+	</div>
+	<div id="clear_data_div">
+	</div>
+	<div id="manage_blocked_list_div">
+	</div>
+	<div id="delete_profile_div">
+	</div>
+	
+	
+
+<% end %>
+
+

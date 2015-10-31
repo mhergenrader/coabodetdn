@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Service:</b>
+  <%= @job_applicant.service_id %>
+</p>
+
+<p>
+  <b>Applicant:</b>
+  <%= @job_applicant.applicant_id %>
+</p>
+
+<p>
+  <b>Is hired:</b>
+  <%= @job_applicant.is_hired %>
+</p>
+
+<p>
+  <b>Is paid:</b>
+  <%= @job_applicant.is_paid %>
+</p>
+
+
+<%= link_to 'Edit', edit_job_applicant_path(@job_applicant) %> |
+<%= link_to 'Back', job_applicants_path %>

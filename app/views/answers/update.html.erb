@@ -1,0 +1,20 @@
+<!-- no longer used -->
+
+<!-- only temporary: will remove when I add AJAX to the develop page; used for both creating and editing a profile -->
+<%= @ms_values %>
+<h1>Profile Question Submission</h1>
+
+<p>You submitted:</p>
+
+<p>All: <%= @all %><p>
+<p>User response: <%= @user_response %></p>
+<p>Answer: <%= @answer %></p>
+<p>All question ids: <%= @all_question_ids %>,     <%= @next_page_path %></p>
+<p>Error Status: <%= @error_status %></p>
+	
+Link: <%= link_to @direction,@next_page_path %> <!-- fix this -->
+
+<p>Save status: <%= @save_status %></p>
+
+
+

@@ -1,0 +1,21 @@
+<h1>Sent Messages</h1>
+
+<table class="table table-striped">
+  <tr> 
+    <th width="25%">To</th>
+    <th width="50%">Title</th>
+  </tr>
+
+<% @messages.each do |message| %>
+  <tr>
+    <td><%= message.recipients.map(&:email).to_sentence %></td>
+    <td><%= link_to message.title, message_show_sent_path(message) %></td>
+  </tr>
+<% end %>
+</table>
+
+<div class="page_info">
+	<%= page_entries_info @pages %>
+</div>
+<%= will_paginate @pages, :class => "pagination" %>
+

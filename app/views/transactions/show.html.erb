@@ -1,0 +1,32 @@
+<div id="ajax-data">
+	<p id="notice"><%= notice %></p>
+
+	<h1>Viewing Transaction #<%= @transaction.id %></h1>
+	<hr/>
+
+	<table class="table striped" width="100%">
+		<tr>
+			<th width="25%">Service</th>
+			<td width="75%"><% if @transaction.job != nil %><a href="<%= url_for(@transaction.job) %>"><%= @transaction.job.title %></a> <% else %> N/A <% end %></td>
+		</tr>
+		<tr>
+			<th width="25%">From (Sender)</th>
+			<td><%if !@transaction.is_system %> <%= @transaction.from.username %> <% else %> System <% end %></td>
+		</tr>
+		<tr>
+			<th width="25%">To: (Receiver)</th>
+			<td><%= @transaction.to.username %></td>
+		</tr>
+		<tr>
+			<th width="25%">Amount</th>
+			<td><%= @transaction.amount %></td>
+		</tr>
+
+	</table>
+
+
+	<% if can? :edit, @transaction %>
+	<%= link_to 'Edit', edit_transaction_path(@transaction), :class=> "btn btn-success " %>
+	<% end %>
+	<%= link_to 'Back', transactions_path, :class=> "btn btn-info " %>
+</div>

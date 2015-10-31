@@ -1,0 +1,25 @@
+<!-- display all images belonging to a current user -->
+<% if user_signed_in? %>
+	<% if @all_images.count == 0 %><!-- if there are currently no images -->
+		<% if @view_edit_links %>
+			<%= @first_name %>, you currently have no images. Would you like to <%= link_to 'upload some', new_profile_image_path(@user_profile.id) %>?
+		<% else %>
+			<%= @first_name %> currently has no images uploaded.
+		<% end %>
+	<% else %>
+		<% @all_images.each do |image| %>
+			<div id="<%= image.name.to_s + "_div" %>" class="user_image">
+				<%= link_to image_tag(image.image_url(:thumb).to_s, :border => 0), profile_image_path(@user_profile.id,image.id), { :class => 'index_image' } %>
+				<p><%= image.name %></p>
+				<% if @view_edit_links %>
+					<% if image.profile_picture %>
+						<p>(CURRENT PROFILE IMAGE)</p>
+					<% end %>
+					<p><%= link_to 'Edit picture info', edit_profile_image_path(@user_profile.id,image.id), :class=> "btn btn-info" %></p> <!-- user can also edit the metadata from this post or remove it entirely -->
+					<p><%= link_to 'Remove picture', profile_image_path(@user_profile.id,image.id), :method => :delete, :confirm => "Are you sure you want to remove this picture?",:class=> "btn btn-danger"  %></p>
+				<% end %>			
+			</div>
+		<% end %>
+		<p><%= link_to 'Upload new image', new_profile_image_path(@user_profile.id), :class=> "btn btn-inverse" %></p>
+	<% end %>
+<% end %>

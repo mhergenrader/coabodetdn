@@ -1,0 +1,121 @@
+<div id="ajax-data">
+<p id="notice"><%= notice %></p>
+
+	<%= form_for @job_applicant, :html => { :class => "form-horizontal" }  do |f| %>
+		<fieldset>
+			<legend class="todo-tooltip" title="Title/Short Description of Service Requested"><%= @job.title %></legend>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="The requestor has agreed to set the email to public, and is OK with you emailing questions about the service." for="textarea">Email of Requestor</label>
+				<div class="controls">
+					<%= @job.user.email %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Expected Hours">Expected Hours</label>
+				<div class="controls">
+					<%= @job.price %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="When would you need to perform the service by?">Expiration for Service</label>
+				<div class="controls">
+					<%= @job.when.month %>/<%= @job.when.day %>/<%= @job.when.year %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="What kind of service this is">Category</label>
+				<div class="controls">
+					<%= Category.find_by_id(@job.category_id).name if Category.find_by_id(@job.category_id) %>
+				</div>
+			</div>
+			
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Describes the service in full detail. If there's something you're not sure about, ask!" for="textarea">Service Description</label>
+				<div class="controls">
+					<%= @job.description %>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Address where the job needs to be done." for="textarea">Service Address</label>
+				<div class="controls">
+					<%= @job.address %>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label todo-tooltip" title="Number of workers the job needs to be done." for="textarea">Number Of Workers</label>
+				<div class="controls">
+					<%= @job.num_of_workers %>
+				</div>
+			</div>
+
+			
+			<%= f.hidden_field(:service_id, :value => @job.id) %>
+		
+		
+
+		<% if current_user != nil and  @job.user.id != current_user.id %>
+		<div class="form-actions buttons">
+           <% if !current_user.job_applications.find_by_service_id(@job.id) %>
+		    <button class="action green upper">
+			   <span class="label">Apply</span>
+			</button>
+			
+		   <% else %>
+			You have already applied for this service.
+           <% end %>
+		</div>
+		<% end %>
+		
+		
+		
+		
+		</fieldset>
+	<% end %>
+	
+	<% if current_user != nil and  @job.user.id == current_user.id and @job.job_applicants != nil %>
+	<h2>Listing Applicants</h2>
+	
+	<table class="table table-striped">
+		<tr><th>Applicant</th>
+		<th>
+		Options
+		</th>
+		</tr>
+		<% @job.job_applicants.each do |app| %>
+		<tr>
+		<td><%= app.applicant.username %></td>
+		<td>
+			<% if app.is_hired == nil or app.is_hired == false %>
+                            <% if @job.is_accepted == false%>
+                          	<a href="/jobs/accept/<%= app.id %>" class="btn btn-success">Accept</a>
+                            <% end %>
+			<% else %>
+			<a href="/transactions/reward/<%= app.id %>" class="btn btn-success">Reward Worker</a>
+			<% end %>
+		</td>
+		</tr>
+		<% end %>
+	</table>
+	
+	
+	
+	
+	
+	
+	
+	<% end %>
+	
+	
+	
+
+<% if current_user != nil and  @job.user.id == current_user.id %>
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<% end %>
+
+<%= link_to 'Back', jobs_path %>
+</div>

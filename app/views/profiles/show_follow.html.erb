@@ -1,0 +1,31 @@
+<table summary="Information about following/followers">
+  <tr>
+    <td class="main">
+      <h1><%= @title %></h1>
+</br>
+      <% unless @users.empty? %>
+        <ul class="users">
+		<% @users.each do |user| %>
+          <li><tr>
+			<td width="75%">
+			<h3><a class='modal-dialog' href="<%= url_for(user) %>"><%= user.username %></a></h3>
+			<span class="todo-tooltip" title="Email:"><%= user.email %></span> <br/>
+			<br/>
+			<div class="address"><%= user.first_name %></div>
+			<br/>
+			</td>
+		  </tr>
+		  </li>
+		  
+		<% end %>
+		  
+        </ul>
+        <%= will_paginate @users %>
+      <% end %>
+    </td>
+    <td class="sidebar round">
+      <strong>Name</strong> <%= @user.username %><br />
+      <strong>URL</strong> <%= link_to user_path(@user), @user %><br />
+    </td>
+  </tr>
+</table>

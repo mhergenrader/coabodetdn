@@ -1,0 +1,106 @@
+<h1>Sign Up</h1>
+<hr/>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :class => "form-horizontal" }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <fieldset>
+	<legend>Account Information</legend>
+  <div class="todo-popover control-group" 
+		data-original-title="Username" 
+		data-content="Please choose a unique username for CoAbode.">
+		<%= f.label :username, :class => "control-label" %>
+  <%= f.text_field :username, :class=> "controls" %></div>
+  
+  
+  <div class="control-group todo-popover" 
+		data-original-title="Why do we need your email?" 
+		data-content="We'll contact you via email. Don't worry, we won't spam your mailboxes."
+		
+		><%= f.label :email, :class => "control-label" %>
+  <%= f.email_field :email, :class=> "controls" %></div>
+
+  <div class="control-group todo-popover" 
+		data-original-title="Why do you need a password?" 
+		data-content="You will have currency in the time dollar network and information that will need to be protected. Please choose a password (minimum of 6 characters) that is not password1, or 123456 - choose a GOOD password such as F3&!#X (please dont use F3&!#X as a password)"
+		><%= f.label :password , :class => "control-label" %>
+  <%= f.password_field :password , :class=> "controls" %></div>
+
+  <div class="control-group" ><%= f.label :password_confirmation , :class => "control-label" %>
+  <%= f.password_field :password_confirmation , :class=> "controls" %></div>
+  </fieldset>
+  
+  
+  
+  <fieldset>
+  <legend>Background</legend>
+    <div class="todo-popover control-group" 
+		data-original-title="First Name" 
+		data-content="Please enter your first name. Don't worry, it will not be seen by other users.">
+		<%= f.label :first_name, :class => "control-label" %>
+		<%= f.text_field :first_name , :class=> "controls" %>
+   </div>
+  
+  <div class="todo-popover  control-group" 
+		data-original-title="Middle Name" 
+		data-content="This field is optional.">
+		<%= f.label :middle_name, :class => "control-label" %>
+		<%= f.text_field :middle_name, :class=> "controls"  %>
+  </div>
+  
+  <div class="todo-popover control-group" 
+		data-original-title="Last Name" 
+		data-content="Please enter your last name. Don't worry, it will not be seen by other users.">
+		<%= f.label :last_name, :class => "control-label" %>
+		<%= f.text_field :last_name, :class=> "controls" %>
+  </div>
+  
+  <div class="control-group todo-popover" 
+		data-original-title="Date of Birth" 
+		data-content="Please enter your date of birth. Don't worry, it will not be seen by other users.">
+		<%= f.label :date_of_birth, :class => "control-label" %>
+		<label class="controls" style="display:inline-block; margin-bottom:0;">
+		<%= f.date_select :date_of_birth, {:order=> [:month, :day, :year], :start_year => 1900, :end_year => Time.now.year}, {:class=> " span2"} %>
+		</label>
+   </div>
+  
+  <div class=" control-group todo-popover" 
+		data-original-title="Ethnicity" 
+		data-content="Please enter your ethnicity. ">
+		<%= f.label :ethnicity,  :class => "control-label" %>
+		<%= f.text_field :ethnicity,  :class => "controls" %>
+  </div>
+  
+  <div class="control-group todo-popover" 
+		data-original-title="City" 
+		data-content="Please enter the city you currently live in. It will be used to help find jobs close to you."
+		
+		><%= f.label :city ,  :class => "control-label" %>
+  <%= f.text_field :city ,  :class => "controls" %>
+  
+  </div>
+  
+  <div class="control-group todo-popover" 
+		data-original-title="State" 
+		data-content="Please enter the state you currently live in. It will be used to help find jobs close to you.">
+		<%= f.label :state,  :class => "control-label" %>
+		<%= f.text_field :state,  :class => "controls" %>
+  </div>
+
+	<div class="control-group todo-popover" 
+		data-original-title="Zip Code" 
+		data-content="Please enter your zip code. Services will be sorted by zip code, so this information is important.">
+		<%= f.label :zip_code,  :class => "control-label"  %>
+		<%= f.text_field :zip_code,  :class => "controls" %>
+  </div>
+  </fieldset>
+  
+  
+   <div class="form-actions buttons">
+		<button class="action green">
+		<span class="label upper">Sign Up</span>
+		</button>
+	 </div>
+<% end %>
+
+<%= render :partial => "devise/shared/links" %>

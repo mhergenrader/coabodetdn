@@ -1,0 +1,8 @@
+<!-- pretty obvious functionality - show a single image -->
+<div id="picture_area">
+	<%= image_tag @image.image_url.to_s if not @image.nil? %>
+	<p>Name: <%= @image.name %></p> <!-- TODO: could add more info here regarding profile, timing of upload, etc.-->
+	
+	<p><%= link_to 'View all images', profile_images_path(@user_profile.id) %></p> <!-- some convenient quick-nav links -->
+	<p><%= link_to 'Return to profile', profile_path(@user_profile.id) %></p>
+</div>

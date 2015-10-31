@@ -1,0 +1,21 @@
+<% if user_signed_in? %>
+
+	<h1>Details: <%= @question.short_name %></h1>
+	
+	<div id="questions_div">		
+		<p>Question Text: <%= @question.text %></p>
+		<p>Domain (what part of the site it is used for): <%= (@question.domain.nil? ? Question::UNFILED_DOMAIN.capitalize : @question.domain.capitalize) %></p>
+		<p>Type: <%= get_pretty_question_type(@question.question_type).nil? ? 'ERROR' : get_pretty_question_type(@question.question_type) %></p>
+		<% if @question.question_type != 'TEXT' %>
+			<p>Current choices: <%= @current_options.join(', ') %></p>
+		<% end %>
+		<p>Created by: <%= get_user_name_by_id(@question.created_by) %></p>
+		<p>Created at: <%= @question.created_at.nil? ? 'ERROR' : @question.created_at %></p>
+		<p>Last Modified by: <%= (@question.updated_at == @question.created_at ? 'N/A' : get_user_name_by_id(@question.updated_by)) %></p>
+		<p>Last Modified at: <%= @question.updated_at.nil? ? 'ERROR' : (@question.updated_at == @question.created_at ? 'N/A' : @question.updated_at) %></p>
+		
+		<p><%= link_to 'Edit', edit_question_path(@question.id) %></p>
+		<p><%= link_to 'View all questions', questions_path %></p>				
+	</div>
+<% end %>
+

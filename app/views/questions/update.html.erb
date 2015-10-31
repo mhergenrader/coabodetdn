@@ -1,0 +1,8 @@
+<!-- only temporary (for debugging purposes) -->
+
+<h1>Question Creation Submitted</h1>
+<p><%= @error_message %></p>
+<p><%= @param_list %></p>
+<p><%= @choices.nil? ? 'no choices' : @choices %></p>
+
+<%= link_to 'Return to Questions List', questions_path %>

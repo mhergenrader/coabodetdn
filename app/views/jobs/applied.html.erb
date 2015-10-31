@@ -1,0 +1,53 @@
+<h1>My Applied Service Requests</h1>
+<hr />
+
+<table class="table table-striped" >
+  <tr>
+	<th width="55%">Service/Job Name</th>
+	<th>Offering</th>
+	<th>Date</th>
+	<th>Status</th>
+	<th>Options</th>
+  </tr>
+<% @applied_jobs.each do |app| 
+	job = app.job %>
+  <tr>
+		<td><a class='modal-display' href="<%= url_for(job) %>"><%= job.title %></a></td>
+		<td><%= job.price %></td>
+		<td><%= job.when.month %>/<%= job.when.day %>/<%= job.when.year %></td>
+		<td>
+		<% if(!app.is_hired and !app.is_paid)%>
+		<span class="label">APPLIED</span>
+		<% end %>
+		
+		<% if(app.is_hired and !app.is_paid)%>
+		<span class="label label-warning">HIRED</span>
+		<% end %>
+		
+		<% if(app.is_paid) %>
+		<span class="label label-success">PAID</span>
+		<% end %>
+		
+		
+		</td>
+	
+		<td>
+			<div class="btn-group">
+			  <a class="btn" href="#"><i class="icon white user"></i>Options</a>
+			  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a class='modal-dialog' href="<%= url_for(job) %>">View</a></li>
+				<% if current_user != nil and  (job.user.id == current_user.id or current_user.role? :admin) %>
+				<li><a href="#"> <%= link_to 'Edit', edit_job_path(job) %></a></li>
+				<li><i class="icon-trash"></i> <%= link_to 'Delete', job, confirm: 'Are you sure?', method: :delete %></li>
+				<% end %>
+			  </ul>
+			</div>
+		</td>
+  </tr>
+  
+  
+  
+  
+<% end %>
+</table>

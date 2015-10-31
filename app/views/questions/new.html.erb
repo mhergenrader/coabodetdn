@@ -1,0 +1,7 @@
+<% if user_signed_in? %> <!-- TODO: checking for admin role instead -->
+	<h1>Create New Question</h1>
+
+	<%= render "shared/question_builder" %> <!-- view reuse ftw! -->
+	<%= link_to 'Cancel', questions_path %>
+<% end %>
+

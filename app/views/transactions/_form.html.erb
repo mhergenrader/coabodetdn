@@ -1,0 +1,43 @@
+<%= form_for @transaction , :html => { :class => "form-horizontal" } do |f| %>
+  <% if @transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+
+      <ul>
+      <% @transaction.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field control-group">
+    <%= f.label :service_id, :class => "control-label" %>
+	 <%= f.select  :service_id , current_user.jobs.collect { |j| [j.title, j.id] }, {},  :class=> "controls", :include_blank=> true  %>
+  </div>
+  <% if current_user.role? :admin %>
+	<div class="field control-group">
+		<%= f.label :sender_id, :class => "control-label" %>
+		<%= f.number_field :sender_id, :value => current_user.id,  :class=> "controls" %>
+	</div>
+  <% end %>
+  <div class="field control-group">
+    <%= f.label :receiver_id , :class => "control-label" %>
+    <%= f.select  :receiver_id , User.all.collect { |u| [u.email, u.id] }, {},  :class=> "controls", :include_blank=> true  %>
+  </div>
+  <div class="field control-group">
+    <%= f.label :amount , "Hours Completed", :class => "control-label" %>
+    <%= f.text_field :amount,   :class=> "controls" %>
+  </div>
+  <% if current_user.role? :admin %>
+  <div class="field control-group">
+    <%= f.label :is_system , :class => "control-label" %>
+    <%= f.check_box :is_system,  :class=> "controls" %>
+  </div>
+  <% end %>
+  <div class="form-actions buttons">
+		<button class="action green">
+		<span class="label upper">Save Changes</span>
+		</button>
+	</div>
+<% end %>

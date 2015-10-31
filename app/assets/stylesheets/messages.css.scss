@@ -1,0 +1,20 @@
+// Place all the styles related to the Messages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+tr.unread { 
+	font-weight:bold;
+}
+
+#new_message .field_with_errors { 
+	padding:0px;
+	display:block;
+}
+
+#new_message #error_explanation {
+    background-color: #F0F0F0;
+    border: 2px solid red;
+    margin-bottom: 20px;
+    padding: 7px 7px 0;
+    width: 850px
+}

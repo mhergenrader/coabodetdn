@@ -1,0 +1,36 @@
+<div id="ajax-data">
+	<p id="notice"><%= notice %></p>
+
+	<h1>Viewing Dispute #<%= @dispute.id %></h1>
+	<hr/>
+
+	<table class="table striped" width="100%">
+		<tr>
+			<th width="25%">Service</th>
+			<td width="75%"><% if @dispute.job != nil %><a href="<%= url_for(@dispute.job) %>"><%= @dispute.job.title %></a> <% else %> N/A <% end %></td>
+		</tr>
+		<tr>
+			<th width="25%">Owner</th>
+			<td><%= User.where("id = ?" , @dispute.owner_id).first.username %> </td>
+		</tr>
+		<tr>
+			<th width="25%">Offender</th>
+			<td><%= User.where("id = ?" , @dispute.offender_id).first.username %></td>
+		</tr>
+		<tr>
+			<th width="25%">Description</th>
+			<td><%= @dispute.description %></td>
+		</tr>
+
+	</table>
+
+
+	<% if can? :edit, @dispute %>
+	<%= link_to 'Edit', edit_dispute_path(@dispute), :class=> "btn btn-success " %>
+	<% end %>
+	<% if current_user.role? :admin %>
+		<%= link_to 'Back', "admin_list", :class=> "btn btn-info " %>
+	<% else %>
+		<%= link_to 'Back', "dispute_list", :class=> "btn btn-info " %>
+	<% end %>
+</div>

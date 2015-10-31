@@ -1,0 +1,34 @@
+
+<!-- figure out how to use for edit.html.erb in questions -->
+
+	<div id="new_question_div"> <!-- should be able to reuse this logic/template for editing questions -->
+		<%= form_for @new_question do |f| %>
+			<%= f.label :short_name %>
+			<%= f.text_field :short_name, { :autocomplete => 'off', :placeholder => 'Enter a short identifier', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_names } %><p id="short_name_error_message" class="error"></p>
+			<%= f.label :text %>
+			<%= f.text_field :text, { :autocomplete => 'off', :placeholder => 'What will the question say?', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @question_texts } %><p id="text_error_message" class="error"></p>
+			
+			<%= f.label :domain %>
+			<%= select(:question,:domain, [ Question::UNFILED_DOMAIN.capitalize,Question::PROFILE_DOMAIN.capitalize,Question::FEEDBACK_DOMAIN.capitalize ], {:prompt => false} ) %>
+			
+			<%= f.label :question_type %>
+			<%= select(:question,:question_type, [ 'Text','Multiple Choice','Multiple Selection' ], {:prompt => false} ) %>			
+			
+			<div id="add_choices_div"> <!-- this will appear when a user changes the type to multiple choice or multiple selection -->
+				<label for="choices_input"><h3>Add choices</h3></label>				
+				
+				<%= text_field_tag :choices_input, '', { :autocomplete => 'off', :placeholder => 'Add a choice', 'data-provide' => 'typeahead', 'data-items' => 5, 'data-source' => @all_choices } %>				
+				<%= link_to 'Add','#', { :id => 'choice_submit', :class=> 'btn btn-success' } %>
+				<%= link_to 'Clear Choices','#', { :id => 'clear_choices', :class=> 'btn btn-danger' } %>
+						
+				<p id="choice_error_message" class="error"></p>				
+				<div id="current_choices_div">
+					<ul class="droptrue" id="current_choices">
+					</ul>
+				</div>
+			</div>	
+			
+			<p><%= f.submit %></p>
+		<% end %>		
+	</div>
+
